@@ -1,7 +1,7 @@
 # Проект «Большое путешествие»
 
 * Студент: [Dmitry Pulsha](https://up.htmlacademy.ru/ecmascript/20/user/1599147).
-* Наставник: `Неизвестно`.
+* Наставник: [Александр Конотоп](https://up.htmlacademy.ru/ecmascript/20/user/2123489).
 
 ---
 
