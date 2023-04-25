@@ -13,3 +13,4 @@ big-trip-20.code-workspace
 node_modules/
 
 # Собранные файлы (допишите самостоятельно)
+build/
