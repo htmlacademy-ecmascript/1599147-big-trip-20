@@ -1,6 +1,7 @@
 # Файлы и папки операционной системы
 .DS_Store
 Thumbs.db
+big-trip-20.code-workspace
 
 # Файлы редактора
 .idea
