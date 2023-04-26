@@ -5,7 +5,7 @@ const HtmlPlugin = require('html-webpack-plugin');
 module.exports = {
   entry: './src/main.js',
   output: {
-    filename: 'bundle[contamthash].js',
+    filename: 'bundle.[contenthash].js',
     path: path.resolve(__dirname, 'build'),
     clean: true,
    },
@@ -15,7 +15,6 @@ module.exports = {
       template: 'public/index.html',
     }),
     new CopyPlugin({
-      patterns: [{ from: 'public' }],
       patterns: [
         {
           from: 'public',
