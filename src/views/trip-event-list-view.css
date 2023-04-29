@@ -1,0 +1,9 @@
+.events-list {
+  display: block;
+}
+
+.events-list__item {
+  display: block;
+  margin-bottom: 54px;
+  margin-left: auto;
+}

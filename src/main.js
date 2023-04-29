@@ -1,15 +1,38 @@
-import {render} from './render.js';
-import FilterView from './view/filter-view.js';
-import TripEventListPresenter from './presenter/trip-list-presenter.js';
+import './views/add-new-event-view.js';
+import './views/trip-info-view.js';
+import './views/filter-view.js';
+import './views/sort-view.js';
+import './views/trip-event-list-view.js';
 
+const header = document.querySelector('.page-header');
+const mainPage = document.querySelector('.page-main');
 
-const siteHeaderElement = document.querySelector('.page-header');
-const headerFilterElement = siteHeaderElement.querySelector('.trip-controls__filters');
-const mainPageElement = document.querySelector('.page-main');
-const tripEventsListElement = mainPageElement.querySelector('.trip-events');
-const tripEventListPresenter = new TripEventListPresenter({ tripEventContainer: tripEventsListElement });
+/**
+ * @type {TripInfoView}
+ */
+const tripInfoView = header.querySelector('trip-info-view');
+tripInfoView.render();
 
-render(new FilterView(), headerFilterElement);
+/**
+ * @type {AddView}
+ */
+const addView = header.querySelector('add-event-view');
+addView.render();
 
-tripEventListPresenter.init();
+/**
+ * @type {FilterView}
+ */
+const filterView = header.querySelector('filter-view');
+filterView.render();
 
+/**
+ * @type {SortView}
+ */
+const sortView = mainPage.querySelector('sort-view');
+sortView.render();
+
+/**
+ * @type {TripEventList}
+ */
+const tripEventList = mainPage.querySelector('trip-event-list');
+tripEventList.render();
