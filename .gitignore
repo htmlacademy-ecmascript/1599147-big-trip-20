@@ -1,16 +1,17 @@
 # Файлы и папки операционной системы
 .DS_Store
 Thumbs.db
-big-trip-20.code-workspace
 
 # Файлы редактора
 .idea
 *.sublime*
 .vscode
+big-trip-20.code-workspace
 
 # Вспомогательные файлы
 *.log*
 node_modules/
+_temp/
 
 # Собранные файлы (допишите самостоятельно)
 build/
