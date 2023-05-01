@@ -39,7 +39,7 @@ const sortView = mainPage.querySelector('sort-view');
 sortView.render();
 
 /**
- * @type {TripEventList}
+ * @type {TripEventListView}
  */
 const tripEventList = mainPage.querySelector('trip-event-list');
 tripEventList.render();

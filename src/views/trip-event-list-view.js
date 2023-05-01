@@ -4,7 +4,7 @@ import View from './view.js';
 import EventEditorView from './event-editor-view.js';
 
 
-class TripEventList extends View {
+class TripEventListView extends View {
   constructor() {
     super();
 
@@ -34,7 +34,7 @@ class TripEventList extends View {
   }
 }
 
-customElements.define('trip-event-list', TripEventList);
+customElements.define('trip-event-list', TripEventListView);
 
-export default TripEventList;
+export default TripEventListView;
 
