@@ -3,6 +3,13 @@ import './views/trip-info-view.js';
 import './views/filter-view.js';
 import './views/sort-view.js';
 import './views/trip-event-list-view.js';
+import AppModel from './model/app-model.js';
+
+const appModel = new AppModel();
+console.log(appModel.getEventPoints());
+console.log(appModel.getPoints());
+console.log(appModel.getOfferGroups());
+
 
 const header = document.querySelector('.page-header');
 const mainPage = document.querySelector('.page-main');
@@ -36,3 +43,10 @@ sortView.render();
  */
 const tripEventList = mainPage.querySelector('trip-event-list');
 tripEventList.render();
+
+
+// /**
+//  * @type {TripEventModel}
+//  */
+// const tripEventData = new TripEventModel();
+// console.log(tripEventData.getTripList());
