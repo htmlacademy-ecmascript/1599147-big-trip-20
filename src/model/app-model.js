@@ -47,7 +47,7 @@ export default class AppModel extends Model {
     return {
       id: eventPoint.id,
       type: eventPoint.type,
-      destinationId: eventPoint.destination,
+      pointId: eventPoint.destination,
       startDateTime: eventPoint.date_from,
       endDateTime: eventPoint.date_to,
       basePrice: eventPoint.base_price,

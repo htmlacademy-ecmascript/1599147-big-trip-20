@@ -14,11 +14,10 @@
  * @typedef {import ('../model/app-model.js').default} AppModel
  */
 
-
 /**
  * @typedef RawEventPoint
  * @prop {string} id
- * @prop {PointType} type
+ * @prop {EventType} type
  * @prop {string} destination
  * @prop {string} date_from
  * @prop {string} date_to
@@ -30,13 +29,36 @@
 /**
  * @typedef EventPoint
  * @prop {string} id
- * @prop {PointType} type
- * @prop {string} destinationId
+ * @prop {EventType} type
+ * @prop {string} pointId
  * @prop {string} startDateTime
  * @prop {string} endDateTime
  * @prop {number} basePrice
  * @prop {Array<string>} offersIdList
  * @prop {boolean} isFavorite
+ */
+
+/**
+ * @typedef EventListViewState
+ * @prop {Array<EventViewState>} items
+ */
+
+/**
+ * @typedef EventViewState
+ * @prop {string} id
+ * @prop {Array<{value: EventType, isSelected: boolean}>} eventTypeList
+ * @prop {Array<Point & {isSelected: boolean}>} pointList
+ * @prop {string} startDateTime
+ * @prop {string} endDateTime
+ * @prop {string} startDate
+ * @prop {string} endDate
+ * @prop {string} startTime
+ * @prop {string} endTime
+ * @prop {string} duration
+ * @prop {number} basePrice
+ * @prop {Array<Offer & {isSelected: boolean}>} offerList
+ * @prop {boolean} isFavorite
+ * @prop {boolean} isEditable
  */
 
 /**
@@ -54,7 +76,7 @@
 
 /**
  * @typedef Offers
- * @prop {PointType} type
+ * @prop {EventType} type
  * @prop {Array<Offer>} offers
  */
 
@@ -66,5 +88,5 @@
  */
 
 /**
- * @typedef {'taxi' | 'bus' | 'train' | 'ship' | 'drive' | 'flight' | 'check-in' | 'sightseeing' | 'restaurant'} PointType
+ * @typedef {'taxi' | 'bus' | 'train' | 'ship' | 'drive' | 'flight' | 'check-in' | 'sightseeing' | 'restaurant'} EventType
  */

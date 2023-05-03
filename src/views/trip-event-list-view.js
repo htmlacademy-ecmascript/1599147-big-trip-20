@@ -3,7 +3,9 @@ import CardView from './card-view.js';
 import View from './view.js';
 import EventEditorView from './event-editor-view.js';
 
-
+/**
+ * @extends {View<EventListViewState>}
+ */
 class TripEventListView extends View {
   constructor() {
     super();
@@ -16,18 +18,24 @@ class TripEventListView extends View {
    * @override
    */
   render() {
-    const views = Array(5).fill().map(this.createItemView);
+    const views = this.state.items.map(this.createItemView);
 
     this.replaceChildren(...views);
 
   }
 
-  createItemView(none, index) {
+  /**
+   *
+   * @param {EventViewState} state
+   * @return {EventEditorView | CardView}
+   */
+  createItemView(state) {
 
-    const view = (index === 0) ? new EventEditorView() : new CardView();
+    const view = state.isEditable ? new EventEditorView() : new CardView();
 
     view.classList.add('events-list__item');
     view.setAttribute('role', 'listitem');
+    view.state = state;
     view.render();
 
     return view;

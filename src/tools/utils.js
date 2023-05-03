@@ -1,4 +1,8 @@
 import {escape as escapeHtml} from 'he';
+import dayjs from 'dayjs';
+import durationPlugin from 'dayjs/plugin/duration';
+
+dayjs.extend(durationPlugin);
 
 class SafeHtml extends String {}
 
@@ -26,8 +30,9 @@ function html(strings, ...values) {
 }
 
 /**
- * @param a
- * @param b
+ * @param {number} a
+ * @param {number} b
+ * @return {number}
  */
 const getRandomInteger = (a = 0, b = 1) => {
   const lower = Math.ceil(Math.min(a, b));
@@ -41,4 +46,30 @@ const getRandomInteger = (a = 0, b = 1) => {
  */
 const getRandomItem = (array) => array[getRandomInteger(0, array.length - 1)];
 
-export {SafeHtml, html, getRandomInteger, getRandomItem };
+/**
+ *
+ * @param {string} dateTime
+ * @return {string}
+ */
+const formatDate = (dateTime) => dayjs(dateTime).format('MMM D');
+
+/**
+ *
+ * @param {string} dateTime
+ * @return {string}
+ */
+const formatTime = (dateTime) => dayjs(dateTime).format('HH:mm');
+
+/**
+ *
+ * @param {string} startDateTime
+ * @param {string} endDateTime
+ * @return {string}
+ */
+const formatDuration = (startDateTime, endDateTime) => {
+  const millisecondDuration = dayjs(endDateTime).diff(startDateTime);
+  return dayjs.duration(millisecondDuration).format('DD[D] HH[H] mm[M]');
+};
+
+
+export {SafeHtml, html, getRandomInteger, getRandomItem, formatDate, formatTime, formatDuration };

@@ -1,6 +1,9 @@
 import View from './view.js';
 import {html} from '../tools/utils.js';
 
+/**
+ * @extends {View<EventViewState>}
+ */
 class CardView extends View {
 
   /**
