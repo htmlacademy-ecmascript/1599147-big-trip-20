@@ -22,7 +22,7 @@ class TripEventListPresenter extends Presenter {
     // 3.2 - метод формирования списка точек
     const items = eventPoints.map((value, index) => this.createEventViewState(value, index));
     // const items = eventPoints.map(this.createEventViewState, this);
-    // console.log(eventPoints);
+
     // console.log(items);
 
     return {items};
@@ -48,6 +48,12 @@ class TripEventListPresenter extends Presenter {
       isSelected: item.id === eventItem.pointId
     }));
 
+    const offers = offerGroups.find((item) => item.type === eventItem.type).offers;
+    // console.log(offerList);
+
+    const offerList = offers.map((item) => ({...item, isSelected: eventItem.offersIdList.includes(item.id)}));
+    // console.log(offerList);
+
     return {
       id: eventItem.id,
       eventTypeList,
@@ -60,7 +66,7 @@ class TripEventListPresenter extends Presenter {
       endTime: formatTime(eventItem.endDateTime),
       duration: formatDuration(eventItem.startDateTime, eventItem.endDateTime),
       basePrice: eventItem.basePrice,
-      offerList: [],
+      offerList,
       isFavorite: eventItem.isFavorite,
       isEditable: index === 0
     };
