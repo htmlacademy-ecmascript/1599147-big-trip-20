@@ -64,6 +64,7 @@
 /**
  * @typedef Point
  * @prop {string} id
+ * @prop {string} description
  * @prop {string} name
  * @prop {Array<Picture>} pictures
  */
