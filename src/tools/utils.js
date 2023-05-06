@@ -1,6 +1,7 @@
 import {escape as escapeHtml} from 'he';
 import dayjs from 'dayjs';
 import durationPlugin from 'dayjs/plugin/duration';
+import {DATE_CONSTANTS, DURATION_FORMATS} from '../config/date-time-config.js';
 
 dayjs.extend(durationPlugin);
 
@@ -68,6 +69,20 @@ const formatTime = (dateTime) => dayjs(dateTime).format('HH:mm');
  */
 const formatDuration = (startDateTime, endDateTime) => {
   const millisecondDuration = dayjs(endDateTime).diff(startDateTime);
+
+  switch (true) {
+    case millisecondDuration > DATE_CONSTANTS.MILLISECONDS * DATE_CONSTANTS.SECONDS * DATE_CONSTANTS.MINUTES * DATE_CONSTANTS.HOURS:
+      return dayjs.duration(millisecondDuration).format(DURATION_FORMATS.DURATION_DAY);
+
+    case millisecondDuration > DATE_CONSTANTS.MILLISECONDS * DATE_CONSTANTS.SECONDS * DATE_CONSTANTS.MINUTES:
+      return dayjs.duration(millisecondDuration).format(DURATION_FORMATS.DURATION_HOURS);
+
+    case millisecondDuration < DATE_CONSTANTS.MILLISECONDS * DATE_CONSTANTS.SECONDS * DATE_CONSTANTS.MINUTES:
+      return dayjs.duration(millisecondDuration).format(DURATION_FORMATS.DURATION_MINUTES);
+
+    default:
+      break;
+  }
   return dayjs.duration(millisecondDuration).format('DD[D] HH[H] mm[M]');
 };
 
