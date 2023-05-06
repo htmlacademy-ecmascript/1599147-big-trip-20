@@ -51,10 +51,10 @@ class CardView extends View {
    * @return {SafeHtml}
    */
   createEventDestinationHtml() {
-    const eventType = this.state.eventTypeList.find((item) => item.isSelected).value;
+    const eventTypeName = this.state.eventTypeList.find((item) => item.isSelected).description;
     const pointName = this.state.pointList.find((item) => item.isSelected).name;
 
-    return html`<h3 class="event__title">${eventType} ${pointName}</h3>`;
+    return html`<h3 class="event__title">${eventTypeName} ${pointName}</h3>`;
   }
 
   /**

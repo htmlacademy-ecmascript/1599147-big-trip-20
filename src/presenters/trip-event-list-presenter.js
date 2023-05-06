@@ -1,7 +1,9 @@
 import Presenter from './presenter.js';
 import {formatDate} from '../tools/utils.js';
 import {formatTime} from '../tools/utils.js';
-import { formatDuration } from '../tools/utils.js';
+import {formatDuration} from '../tools/utils.js';
+import {EVENT_TYPES_LIST} from '../config/event-types.config.js';
+
 
 /**
  * @extends {Presenter<TripEventListView, AppModel>}
@@ -25,11 +27,14 @@ class TripEventListPresenter extends Presenter {
    */
   createEventViewState(eventItem, index) {
 
+    const getEventDescription = (item) => EVENT_TYPES_LIST.find((value) => (value.type === item.type)).description;
+
     const offerGroups = this.model.getOfferGroups();
     const points = this.model.getPoints();
 
     const eventTypeList = offerGroups.map((item) => ({
       value: item.type,
+      description: getEventDescription(item),
       isSelected: item.type === eventItem.type
     }));
 

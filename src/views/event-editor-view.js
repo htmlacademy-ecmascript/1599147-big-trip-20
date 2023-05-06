@@ -52,7 +52,7 @@ class EventEditorView extends View {
             ${typeList.map((item) => html`
               <div class="event__type-item">
                 <input id="event-type-${item.value}-1" class="event__type-input  visually-hidden" type="radio" name="event-type" value="${item.value}" ${item.isSelected ? 'checked' : ''}>
-                <label class="event__type-label  event__type-label--${item.value}" for="event-type-${item.value}-1">${item.value}</label>
+                <label class="event__type-label  event__type-label--${item.value}" for="event-type-${item.value}-1">${item.description}</label>
               </div>
             `)}
 

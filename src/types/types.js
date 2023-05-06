@@ -46,7 +46,7 @@
 /**
  * @typedef EventViewState
  * @prop {string} id
- * @prop {Array<{value: EventType, isSelected: boolean}>} eventTypeList
+ * @prop {Array<{value: EventType, description: string, isSelected: boolean}>} eventTypeList
  * @prop {Array<Point & {isSelected: boolean}>} pointList
  * @prop {string} startDateTime
  * @prop {string} endDateTime
