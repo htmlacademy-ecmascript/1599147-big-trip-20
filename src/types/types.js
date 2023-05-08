@@ -89,5 +89,11 @@
  */
 
 /**
+ * @typedef EventTypeList
+ * @prop {EventType} type
+ * @prop {string} description
+ */
+
+/**
  * @typedef {'taxi' | 'bus' | 'train' | 'ship' | 'drive' | 'flight' | 'check-in' | 'sightseeing' | 'restaurant'} EventType
  */
