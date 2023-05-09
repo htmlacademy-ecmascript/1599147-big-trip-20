@@ -62,6 +62,11 @@
  */
 
 /**
+ * @typedef URLParams
+ * @prop {string} [editCardId]
+ */
+
+/**
  * @typedef Point
  * @prop {string} id
  * @prop {string} description
