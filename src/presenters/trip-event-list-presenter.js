@@ -68,7 +68,18 @@ class TripEventListPresenter extends Presenter {
   /**
    * @override
    */
-  createEventListeners() {}
+  createEventListeners() {
+
+    /**
+     * @param {CustomEvent & {target: CardView}} evt
+     */
+    const handleCardOpen = (evt) => {
+      console.log(evt.target.state);
+      console.log(evt.target);
+    };
+
+    this.view.addEventListener('open', handleCardOpen);
+  }
 
 }
 
