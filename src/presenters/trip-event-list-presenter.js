@@ -64,6 +64,12 @@ class TripEventListPresenter extends Presenter {
       isEditable: index === 2
     };
   }
+
+  /**
+   * @override
+   */
+  createEventListeners() {}
+
 }
 
 export default TripEventListPresenter;
