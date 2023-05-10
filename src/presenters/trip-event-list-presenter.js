@@ -90,7 +90,21 @@ class TripEventListPresenter extends Presenter {
 
     };
 
-    this.view.addEventListener('open', handleCardOpen);
+    const handleCardClose = () => {
+
+      /**
+       * @type {URLParams}
+       */
+      const urlParams = this.getUrlParams();
+
+      delete urlParams.editCardId;
+      this.setUrlParams(urlParams);
+
+    };
+
+    this.view.addEventListener('openCard', handleCardOpen);
+    this.view.addEventListener('closeCard', handleCardClose);
+
   }
 
 }
