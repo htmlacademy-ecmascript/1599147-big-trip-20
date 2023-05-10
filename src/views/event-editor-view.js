@@ -6,6 +6,39 @@ import {html} from '../tools/utils.js';
  */
 class EventEditorView extends View {
 
+  constructor() {
+    super();
+    this.addEventListener('click', this.handleClick);
+  }
+
+  /**
+   *  @param {MouseEvent & {target: Element}} evt
+  */
+  handleClick(evt) {
+    if (evt.target.closest('.event__rollup-btn')) {
+      this.notify('closeCard');
+    }
+
+  }
+
+
+  connectedCallback() {
+    document.addEventListener('keydown', this);
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener('keydown', this);
+  }
+
+  /**
+   * @param {KeyboardEvent} event
+   */
+  handleEvent(event) {
+    if (event.key === 'Escape') {
+      this.notify('closeCard');
+    }
+  }
+
   /**
    * @override
    */
@@ -133,7 +166,7 @@ class EventEditorView extends View {
   createCloseHtml() {
     return html`
       <button class="event__rollup-btn" type="button">
-        <span class="visually-hidden">Open event</span>
+        <span class="visually-hidden">Close event</span>
       </button>
     `;
   }

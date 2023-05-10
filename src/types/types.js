@@ -62,6 +62,11 @@
  */
 
 /**
+ * @typedef URLParams
+ * @prop {string} [editCardId]
+ */
+
+/**
  * @typedef Point
  * @prop {string} id
  * @prop {string} description
@@ -86,6 +91,12 @@
  * @prop {string} id
  * @prop {string} title
  * @prop {string} price
+ */
+
+/**
+ * @typedef EventTypeList
+ * @prop {EventType} type
+ * @prop {string} description
  */
 
 /**

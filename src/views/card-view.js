@@ -6,6 +6,21 @@ import {html} from '../tools/utils.js';
  */
 class CardView extends View {
 
+  constructor() {
+    super();
+
+    this.addEventListener('click', this.handleClick);
+  }
+
+  /**
+   *  @param {MouseEvent & {target: Element}} evt
+  */
+  handleClick(evt) {
+    if (evt.target.closest('.event__rollup-btn')) {
+      this.notify('openCard');
+    }
+  }
+
   /**
    * @override
    */
