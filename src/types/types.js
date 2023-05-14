@@ -44,6 +44,13 @@
  */
 
 /**
+ * @typedef TripInfoState
+ * @prop {string} places
+ * @prop {string} dates
+ * @prop {string} cost
+ */
+
+/**
  * @typedef EventViewState
  * @prop {string} id
  * @prop {Array<{value: EventType, description: string, isSelected: boolean}>} eventTypeList

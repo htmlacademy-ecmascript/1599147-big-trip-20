@@ -1,6 +1,9 @@
 import View from './view.js';
 import {html} from '../tools/utils.js';
 
+/**
+ * @extends {View<TripInfoState>}
+ */
 class TripInfoView extends View {
   constructor() {
     super();
@@ -14,11 +17,11 @@ class TripInfoView extends View {
   createHtml() {
     return html`
       <div class="trip-info__main">
-        <h1 class="trip-info__title">Amsterdam — Chamonix — Geneva</h1>
-        <p class="trip-info__dates">Mar 18&nbsp;—&nbsp;20</p>
+        <h1 class="trip-info__title">${this.state.places}</h1>
+        <p class="trip-info__dates">${this.state.dates}</p>
       </div>
       <p class="trip-info__cost">
-        Total: €&nbsp;<span class="trip-info__cost-value">1230</span>
+        Total: €&nbsp;<span class="trip-info__cost-value">${this.state.cost}</span>
       </p>
     `;
   }
