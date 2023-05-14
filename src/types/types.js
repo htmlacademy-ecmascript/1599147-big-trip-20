@@ -51,6 +51,11 @@
  */
 
 /**
+ * @typedef AddNewEventState
+ * @prop {boolean} isDisabled
+ */
+
+/**
  * @typedef EventViewState
  * @prop {string} id
  * @prop {Array<{value: EventType, description: string, isSelected: boolean}>} eventTypeList
