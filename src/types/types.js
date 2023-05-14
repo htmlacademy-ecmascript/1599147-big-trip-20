@@ -39,11 +39,6 @@
  */
 
 /**
- * @typedef EventListViewState
- * @prop {Array<EventViewState>} items
- */
-
-/**
  * @typedef TripInfoState
  * @prop {string} places
  * @prop {string} dates
@@ -53,6 +48,24 @@
 /**
  * @typedef AddNewEventState
  * @prop {boolean} isDisabled
+ */
+
+/**
+ * @typedef FilterItem
+ * @prop {string} type
+ * @prop {string} filterDescription
+ * @prop {boolean} isSelected
+ * @prop {boolean} isDisabled
+ */
+
+/**
+ * @typedef FilterState
+ * @prop {Array<FilterItem>} items
+ */
+
+/**
+ * @typedef EventListViewState
+ * @prop {Array<EventViewState>} items
  */
 
 /**
@@ -113,4 +126,8 @@
 
 /**
  * @typedef {'taxi' | 'bus' | 'train' | 'ship' | 'drive' | 'flight' | 'check-in' | 'sightseeing' | 'restaurant'} EventType
+ */
+
+/**
+ * @typedef {'everything' | 'future' | 'present' | 'past'} FilterType
  */

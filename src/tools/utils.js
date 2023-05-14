@@ -1,7 +1,7 @@
 import {escape as escapeHtml} from 'he';
 import dayjs from 'dayjs';
 import durationPlugin from 'dayjs/plugin/duration';
-import {DATE_CONSTANTS, DURATION_FORMATS} from '../config/date-time-config.js';
+import {DATE_CONSTANTS, DURATION_FORMATS} from '../config/date-time.config.js';
 
 dayjs.extend(durationPlugin);
 
