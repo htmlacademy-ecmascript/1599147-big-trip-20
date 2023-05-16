@@ -1,6 +1,7 @@
 {
   "exclude": [
-    "build"
+    "build",
+    "framework"
   ],
 
   "compilerOptions": {
