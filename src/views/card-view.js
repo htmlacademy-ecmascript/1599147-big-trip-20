@@ -18,6 +18,8 @@ class CardView extends View {
   handleClick(evt) {
     if (evt.target.closest('.event__rollup-btn')) {
       this.notify('openCard');
+    } else if (evt.target.closest('.event__favorite-btn')) {
+      this.notify('favorite');
     }
   }
 
