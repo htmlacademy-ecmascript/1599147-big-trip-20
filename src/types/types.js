@@ -39,6 +39,44 @@
  */
 
 /**
+ * @typedef TripInfoState
+ * @prop {string} places
+ * @prop {string} dates
+ * @prop {string} cost
+ */
+
+/**
+ * @typedef AddNewEventState
+ * @prop {boolean} isDisabled
+ */
+
+/**
+ * @typedef FilterItem
+ * @prop {string} type
+ * @prop {string} filterDescription
+ * @prop {boolean} isSelected
+ * @prop {boolean} isDisabled
+ */
+
+/**
+ * @typedef FilterState
+ * @prop {Array<FilterItem>} items
+ */
+
+/**
+ * @typedef SortItem
+ * @prop {string} type
+ * @prop {string} sortDescription
+ * @prop {boolean} isSelected
+ * @prop {boolean} isDisabled
+ */
+
+/**
+ * @typedef SortState
+ * @prop {Array<SortItem>} items
+ */
+
+/**
  * @typedef EventListViewState
  * @prop {Array<EventViewState>} items
  */
@@ -94,11 +132,19 @@
  */
 
 /**
- * @typedef EventTypeList
+ * @typedef EventTypeItem
  * @prop {EventType} type
  * @prop {string} description
  */
 
 /**
  * @typedef {'taxi' | 'bus' | 'train' | 'ship' | 'drive' | 'flight' | 'check-in' | 'sightseeing' | 'restaurant'} EventType
+ */
+
+/**
+ * @typedef {'everything' | 'future' | 'present' | 'past'} FilterType
+ */
+
+/**
+ * @typedef {'day' | 'event' | 'time' | 'price' | 'offers'} SortType
  */

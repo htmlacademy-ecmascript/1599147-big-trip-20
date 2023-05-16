@@ -6,9 +6,13 @@ import Presenter from './presenter.js';
 class AddNewEventPresenter extends Presenter {
   /**
    * @override
+   * @return {AddNewEventState}
    */
   createViewState() {
     // TODO: AddNewEventViewState
+    return {
+      isDisabled: true
+    };
   }
 }
 

@@ -31,10 +31,11 @@ class EventEditorView extends View {
   }
 
   /**
-   * @param {KeyboardEvent} event
+   * @param {KeyboardEvent} evt
    */
-  handleEvent(event) {
-    if (event.key === 'Escape') {
+  handleEvent(evt) {
+    if (evt.key === 'Escape') {
+      evt.preventDefault();
       this.notify('closeCard');
     }
   }
