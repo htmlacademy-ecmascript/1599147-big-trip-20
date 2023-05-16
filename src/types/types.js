@@ -64,6 +64,19 @@
  */
 
 /**
+ * @typedef SortItem
+ * @prop {string} type
+ * @prop {string} sortDescription
+ * @prop {boolean} isSelected
+ * @prop {boolean} isDisabled
+ */
+
+/**
+ * @typedef SortState
+ * @prop {Array<SortItem>} items
+ */
+
+/**
  * @typedef EventListViewState
  * @prop {Array<EventViewState>} items
  */
@@ -119,7 +132,7 @@
  */
 
 /**
- * @typedef EventTypeList
+ * @typedef EventTypeItem
  * @prop {EventType} type
  * @prop {string} description
  */
@@ -130,4 +143,8 @@
 
 /**
  * @typedef {'everything' | 'future' | 'present' | 'past'} FilterType
+ */
+
+/**
+ * @typedef {'day' | 'event' | 'time' | 'price' | 'offers'} SortType
  */

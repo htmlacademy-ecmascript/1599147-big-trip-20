@@ -6,7 +6,6 @@ import Presenter from './presenter.js';
  */
 class FilterPresenter extends Presenter {
 
-
   /**
    * @override
    * @return {FilterState}
@@ -17,7 +16,7 @@ class FilterPresenter extends Presenter {
     const filterDetails = Object.entries(FILTER_LIST);
 
     /**
-     * @return {FilterState}
+     * @return {Array<FilterItem>}
      */
     const items = filterDetails.map(([type, filterDescription]) => ({
       type,
