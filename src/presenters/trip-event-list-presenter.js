@@ -102,9 +102,25 @@ class TripEventListPresenter extends Presenter {
 
     };
 
+    /**
+     * @param {CustomEvent & {target: CardView}} evt
+     */
+    const handleFavorite = (evt) => {
+      this.toggleFavoriteCard(evt.target);
+    };
+
     this.view.addEventListener('openCard', handleCardOpen);
     this.view.addEventListener('closeCard', handleCardClose);
+    this.view.addEventListener('favorite', handleFavorite);
 
+  }
+
+  /**
+   * @param {CardView} card
+   */
+  toggleFavoriteCard(card) {
+    card.state.isFavorite = !card.state.isFavorite;
+    card.render();
   }
 
 }
