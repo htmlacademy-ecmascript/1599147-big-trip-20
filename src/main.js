@@ -12,9 +12,6 @@ import SortPresenter from './presenters/sort-presenter.js';
 import TripEventListPresenter from './presenters/trip-event-list-presenter.js';
 
 const appModel = new AppModel();
-// console.log(appModel.getEventPoints());
-// console.log(appModel.getPoints());
-// console.log(appModel.getOfferGroups());
 
 const header = document.querySelector('.page-header');
 const mainPage = document.querySelector('.page-main');

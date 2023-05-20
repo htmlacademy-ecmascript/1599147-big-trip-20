@@ -2,7 +2,9 @@
 import Model from './model';
 import rawEventsList from '../mocks/trip-event-mocks.json';
 import rawPointList from '../mocks/point-list-mocks.json';
-import rawOfferGroups from'../mocks/offer-list-mocks.json';
+import rawOfferGroups from '../mocks/offer-list-mocks.json';
+import {getDuration} from '../tools/utils';
+
 
 export default class AppModel extends Model {
   // объявление приватных свойств
@@ -18,10 +20,25 @@ export default class AppModel extends Model {
   }
 
   /**
+   * @type {Record<SortType, (a: EventPoint, b: EventPoint) => number>}
+   */
+  #sortCallbackMap = {
+    day: (a, b) => Date.parse(a.startDateTime) - Date.parse(b.startDateTime),
+    event: () => 0,
+    time: (a, b) => AppModel.calcPointDuration(b) - AppModel.calcPointDuration(a),
+    price: (a, b) => (b.basePrice - a.basePrice),
+    offers: () => 0,
+  };
+
+  /**
+   * @param {{sortType?: SortType}} [criteria]
    * @return {Array<EventPoint>}
    */
-  getEventPoints() {
-    return this.#rawEventsList.map(AppModel.transformEventPoint);
+  getEventPoints(criteria = {}) {
+    const transformedEventPoints = this.#rawEventsList.map(AppModel.transformEventPoint);
+    const sortCallback = this.#sortCallbackMap[criteria.sortType] ?? this.#sortCallbackMap.day;
+
+    return transformedEventPoints.sort(sortCallback);
   }
 
   /**
@@ -57,4 +74,10 @@ export default class AppModel extends Model {
 
   }
 
+  /**
+   * @param {EventPoint} point
+   */
+  static calcPointDuration(point) {
+    return getDuration(point.endDateTime, point.startDateTime);
+  }
 }

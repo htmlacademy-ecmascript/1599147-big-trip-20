@@ -102,6 +102,7 @@
 /**
  * @typedef URLParams
  * @prop {string} [editCardId]
+ * @prop {SortType} [sortType]
  */
 
 /**

@@ -64,10 +64,17 @@ const formatTime = (dateTime) => dayjs(dateTime).format('HH:mm');
 /**
  * @param {string} startDateTime
  * @param {string} endDateTime
+ * @return {number}
+ */
+const getDuration = (startDateTime, endDateTime) => dayjs(endDateTime).diff(startDateTime);
+
+/**
+ * @param {string} startDateTime
+ * @param {string} endDateTime
  * @return {string}
  */
 const formatDuration = (startDateTime, endDateTime) => {
-  const millisecondDuration = dayjs(endDateTime).diff(startDateTime);
+  const millisecondDuration = getDuration(startDateTime, endDateTime);
   const duration = dayjs.duration(millisecondDuration);
 
   if (duration.days()) {
@@ -83,4 +90,4 @@ const formatDuration = (startDateTime, endDateTime) => {
 };
 
 
-export {SafeHtml, html, getRandomInteger, getRandomItem, formatDate, formatTime, formatDuration };
+export {SafeHtml, html, getRandomInteger, getRandomItem, formatDate, formatTime, formatDuration, getDuration };
