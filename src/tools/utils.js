@@ -1,7 +1,7 @@
 import {escape as escapeHtml} from 'he';
 import dayjs from 'dayjs';
 import durationPlugin from 'dayjs/plugin/duration';
-import {DATE_CONSTANTS, DURATION_FORMATS} from '../config/date-time.config.js';
+import {DURATION_FORMATS} from '../config/date-time.config.js';
 
 dayjs.extend(durationPlugin);
 
@@ -62,29 +62,32 @@ const formatDate = (dateTime) => dayjs(dateTime).format('MMM D');
 const formatTime = (dateTime) => dayjs(dateTime).format('HH:mm');
 
 /**
- *
+ * @param {string} startDateTime
+ * @param {string} endDateTime
+ * @return {number}
+ */
+const getDuration = (startDateTime, endDateTime) => dayjs(endDateTime).diff(startDateTime);
+
+/**
  * @param {string} startDateTime
  * @param {string} endDateTime
  * @return {string}
  */
 const formatDuration = (startDateTime, endDateTime) => {
-  const millisecondDuration = dayjs(endDateTime).diff(startDateTime);
+  const millisecondDuration = getDuration(startDateTime, endDateTime);
+  const duration = dayjs.duration(millisecondDuration);
 
-  switch (true) {
-    case millisecondDuration > DATE_CONSTANTS.MILLISECONDS * DATE_CONSTANTS.SECONDS * DATE_CONSTANTS.MINUTES * DATE_CONSTANTS.HOURS:
-      return dayjs.duration(millisecondDuration).format(DURATION_FORMATS.DURATION_DAY);
-
-    case millisecondDuration > DATE_CONSTANTS.MILLISECONDS * DATE_CONSTANTS.SECONDS * DATE_CONSTANTS.MINUTES:
-      return dayjs.duration(millisecondDuration).format(DURATION_FORMATS.DURATION_HOURS);
-
-    case millisecondDuration < DATE_CONSTANTS.MILLISECONDS * DATE_CONSTANTS.SECONDS * DATE_CONSTANTS.MINUTES:
-      return dayjs.duration(millisecondDuration).format(DURATION_FORMATS.DURATION_MINUTES);
-
-    default:
-      break;
+  if (duration.days()) {
+    return duration.format(DURATION_FORMATS.DURATION_DAY);
   }
-  return dayjs.duration(millisecondDuration).format('DD[D] HH[H] mm[M]');
+
+  if (duration.hours()) {
+    return duration.format(DURATION_FORMATS.DURATION_HOURS);
+  }
+
+  return duration.format(DURATION_FORMATS.DURATION_MINUTES);
+
 };
 
 
-export {SafeHtml, html, getRandomInteger, getRandomItem, formatDate, formatTime, formatDuration };
+export {SafeHtml, html, getRandomInteger, getRandomItem, formatDate, formatTime, formatDuration, getDuration };

@@ -1,10 +1,3 @@
-export const DATE_CONSTANTS = {
-  MILLISECONDS: 1000,
-  SECONDS: 60,
-  MINUTES:60,
-  HOURS: 24,
-};
-
 export const DURATION_FORMATS = {
   DURATION_DAY: 'DD[D] HH[H] mm[M]',
   DURATION_HOURS: 'HH[H] mm[M]',

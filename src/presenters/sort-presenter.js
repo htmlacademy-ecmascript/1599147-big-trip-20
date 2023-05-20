@@ -10,9 +10,8 @@ class SortPresenter extends Presenter {
    * @return {SortState}
    */
   createViewState() {
-    // TODO: SortViewState
-
     const sortDetails = Object.entries(SORT_LIST);
+    const {sortType = 'day'} = this.getUrlParams();
 
     /**
      * @return {Array<FilterItem>}
@@ -20,11 +19,34 @@ class SortPresenter extends Presenter {
     const items = sortDetails.map(([type, sortDescription]) => ({
       type,
       sortDescription,
-      isSelected: false,
+      isSelected: type === sortType,
       isDisabled: false
     }));
     return {items};
   }
+
+  /**
+   * @override
+   */
+  createEventListeners() {
+    /**
+     * @param {Event & {target: {value: SortType}}} evt
+     */
+    const handleSortChange = (evt) => {
+
+      /**
+       * @type {URLParams}
+       */
+      const urlParams = this.getUrlParams();
+
+      urlParams.sortType = evt.target.value;
+      delete urlParams.editCardId;
+      this.setUrlParams(urlParams);
+    };
+
+    this.view.addEventListener('change', handleSortChange);
+  }
+
 }
 
 export default SortPresenter;

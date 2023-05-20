@@ -14,8 +14,13 @@ class TripEventListPresenter extends Presenter {
    * @return {EventListViewState}
    */
   createViewState() {
+    /**
+     * @type {URLParams}
+     */
+    const urlParams = this.getUrlParams();
 
-    const eventPoints = this.model.getEventPoints();
+
+    const eventPoints = this.model.getEventPoints(urlParams);
     const items = eventPoints.map((value) => this.createEventViewState(value));
 
     return {items};
@@ -26,6 +31,10 @@ class TripEventListPresenter extends Presenter {
    * @return {EventViewState}
    */
   createEventViewState(tripEventItem) {
+    /**
+     * @type {URLParams}
+     */
+    const urlParams = this.getUrlParams();
 
     const getEventDescription = (item) => EVENT_TYPES_LIST.find((value) => (value.type === item.type)).description;
 
@@ -46,11 +55,6 @@ class TripEventListPresenter extends Presenter {
     const offers = offerGroups.find((item) => item.type === tripEventItem.type).offers;
 
     const offerList = offers.map((item) => ({...item, isSelected: tripEventItem.offersIdList.includes(item.id)}));
-
-    /**
-     * @type {URLParams}
-     */
-    const urlParams = this.getUrlParams();
 
     return {
       id: tripEventItem.id,
