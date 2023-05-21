@@ -3,6 +3,7 @@ import {formatDate} from '../tools/utils.js';
 import {formatTime} from '../tools/utils.js';
 import {formatDuration} from '../tools/utils.js';
 import {EVENT_TYPES_LIST} from '../config/event-types.config.js';
+import EventEditorView from '../views/event-editor-view.js';
 
 
 /**
@@ -82,6 +83,7 @@ class TripEventListPresenter extends Presenter {
     this.view.addEventListener('openCard', this.handleCardOpen.bind(this));
     this.view.addEventListener('closeCard', this.handleCardClose.bind(this));
     this.view.addEventListener('favorite', this.handleFavorite.bind(this));
+    this.view.addEventListener('edit', this.handleEdit.bind(this));
 
   }
 
@@ -119,6 +121,34 @@ class TripEventListPresenter extends Presenter {
     const card = evt.target;
     card.state.isFavorite = !card.state.isFavorite;
     card.render();
+  }
+
+  /**
+   * @param {CustomEvent<HTMLInputElement> & {target: EventEditorView}} evt
+   */
+  handleEdit(evt) {
+
+    const editorItem = evt.target;
+    const editedField = evt.detail;
+    const tripEventPoint = editorItem.state;
+
+    console.log(editedField.name);
+    console.log(editedField.value);
+
+    switch (editedField.name) {
+      case 'event-destination':
+        tripEventPoint.pointList.forEach((item) => {
+          item.isSelected = item.name === editedField.value;
+        });
+        editorItem.render()
+        break;
+
+      default:
+        break;
+    }
+  //   const card = evt.target;
+  //   card.state.isFavorite = !card.state.isFavorite;
+  //   card.render();
   }
 
 }
