@@ -29,22 +29,23 @@ class SortPresenter extends Presenter {
    * @override
    */
   createEventListeners() {
+
+    this.view.addEventListener('change', this.handleSortChange.bind(this));
+  }
+
+  /**
+   * @param {Event & {target: {value: SortType}}} evt
+   */
+  handleSortChange(evt) {
+
     /**
-     * @param {Event & {target: {value: SortType}}} evt
+     * @type {URLParams}
      */
-    const handleSortChange = (evt) => {
+    const urlParams = this.getUrlParams();
 
-      /**
-       * @type {URLParams}
-       */
-      const urlParams = this.getUrlParams();
-
-      urlParams.sortType = evt.target.value;
-      delete urlParams.editCardId;
-      this.setUrlParams(urlParams);
-    };
-
-    this.view.addEventListener('change', handleSortChange);
+    urlParams.sortType = evt.target.value;
+    delete urlParams.editCardId;
+    this.setUrlParams(urlParams);
   }
 
 }
