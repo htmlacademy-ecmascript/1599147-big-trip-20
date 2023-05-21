@@ -79,50 +79,44 @@ class TripEventListPresenter extends Presenter {
    */
   createEventListeners() {
 
-    /**
-     * @param {CustomEvent & {target: CardView}} evt
-     */
-    const handleCardOpen = (evt) => {
-
-      /**
-       * @type {URLParams}
-       */
-      const urlParams = this.getUrlParams();
-
-      urlParams.editCardId = evt.target.state.id;
-      this.setUrlParams(urlParams);
-
-    };
-
-    const handleCardClose = () => {
-
-      /**
-       * @type {URLParams}
-       */
-      const urlParams = this.getUrlParams();
-
-      delete urlParams.editCardId;
-      this.setUrlParams(urlParams);
-
-    };
-
-    /**
-     * @param {CustomEvent & {target: CardView}} evt
-     */
-    const handleFavorite = (evt) => {
-      this.toggleFavoriteCard(evt.target);
-    };
-
-    this.view.addEventListener('openCard', handleCardOpen);
-    this.view.addEventListener('closeCard', handleCardClose);
-    this.view.addEventListener('favorite', handleFavorite);
+    this.view.addEventListener('openCard', this.handleCardOpen.bind(this));
+    this.view.addEventListener('closeCard', this.handleCardClose.bind(this));
+    this.view.addEventListener('favorite', this.handleFavorite.bind(this));
 
   }
 
   /**
-   * @param {CardView} card
+   * @param {CustomEvent & {target: CardView}} evt
    */
-  toggleFavoriteCard(card) {
+  handleCardOpen(evt) {
+
+    /**
+     * @type {URLParams}
+     */
+    const urlParams = this.getUrlParams();
+
+    urlParams.editCardId = evt.target.state.id;
+    this.setUrlParams(urlParams);
+
+  }
+
+  handleCardClose() {
+
+    /**
+     * @type {URLParams}
+     */
+    const urlParams = this.getUrlParams();
+
+    delete urlParams.editCardId;
+    this.setUrlParams(urlParams);
+
+  }
+
+  /**
+   * @param {CustomEvent & {target: CardView}} evt
+   */
+  handleFavorite(evt) {
+    const card = evt.target;
     card.state.isFavorite = !card.state.isFavorite;
     card.render();
   }
