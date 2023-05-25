@@ -213,12 +213,12 @@ class EventEditorView extends View {
    */
   createDestinationDetailsHtml() {
     const currentPoint = this.state.pointList.find((item) => item.isSelected);
-    if (currentPoint) {
-      return html`
-      <section class="event__section  event__section--destination">
+
+    return html`
+      <section class="event__section  event__section--destination" ${currentPoint ? '' : 'hidden'}>
+        ${currentPoint?.pictures.length ? html`
         <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${currentPoint.description}</p>
-        ${currentPoint.pictures.length ? html`
+        <p class="event__destination-description">${currentPoint?.description}</p>
           <div class="event__photos-container">
             <div class="event__photos-tape">
               ${currentPoint.pictures.map((item) => html`
@@ -230,8 +230,13 @@ class EventEditorView extends View {
     : ''}
       </section>
     `;
+  }
+
+  renderDestinationDetails() {
+    if (this.querySelector('.event__section--destination')) {
+      this.render('.event__section--destination', this.createDestinationDetailsHtml());
     } else {
-      return html``;
+      this.render();
     }
   }
 }

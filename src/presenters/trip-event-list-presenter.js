@@ -132,26 +132,17 @@ class TripEventListPresenter extends Presenter {
     const editedField = evt.detail;
     const tripEventPoint = editorItem.state;
 
-    console.log(editedField.name);
-    console.log(editedField.value);
-
     switch (editedField.name) {
       case 'event-destination':
         tripEventPoint.pointList.forEach((item) => {
-          item.isSelected = item.name === editedField.value;
+          item.isSelected = item.name === editedField.value.trim();
         });
-        editorItem.render()
-        break;
-
-      default:
+        editorItem.renderDestinationDetails();
         break;
     }
-  //   const card = evt.target;
-  //   card.state.isFavorite = !card.state.isFavorite;
-  //   card.render();
   }
-
 }
+
 
 export default TripEventListPresenter;
 
