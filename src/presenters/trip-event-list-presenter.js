@@ -1,9 +1,6 @@
 import Presenter from './presenter.js';
-import {formatDate} from '../tools/utils.js';
-import {formatTime} from '../tools/utils.js';
-import {formatDuration} from '../tools/utils.js';
+import {formatDate, formatTime, formatDuration} from '../tools/utils.js';
 import {EVENT_TYPES_LIST} from '../config/event-types.config.js';
-
 
 /**
  * @extends {Presenter<TripEventListView, AppModel>}
@@ -79,55 +76,81 @@ class TripEventListPresenter extends Presenter {
    */
   createEventListeners() {
 
-    /**
-     * @param {CustomEvent & {target: CardView}} evt
-     */
-    const handleCardOpen = (evt) => {
-
-      /**
-       * @type {URLParams}
-       */
-      const urlParams = this.getUrlParams();
-
-      urlParams.editCardId = evt.target.state.id;
-      this.setUrlParams(urlParams);
-
-    };
-
-    const handleCardClose = () => {
-
-      /**
-       * @type {URLParams}
-       */
-      const urlParams = this.getUrlParams();
-
-      delete urlParams.editCardId;
-      this.setUrlParams(urlParams);
-
-    };
-
-    /**
-     * @param {CustomEvent & {target: CardView}} evt
-     */
-    const handleFavorite = (evt) => {
-      this.toggleFavoriteCard(evt.target);
-    };
-
-    this.view.addEventListener('openCard', handleCardOpen);
-    this.view.addEventListener('closeCard', handleCardClose);
-    this.view.addEventListener('favorite', handleFavorite);
+    this.view.addEventListener('openCard', this.handleCardOpen.bind(this));
+    this.view.addEventListener('closeCard', this.handleCardClose.bind(this));
+    this.view.addEventListener('favorite', this.handleFavorite.bind(this));
+    this.view.addEventListener('edit', this.handleEdit.bind(this));
 
   }
 
   /**
-   * @param {CardView} card
+   * @param {CustomEvent & {target: CardView}} evt
    */
-  toggleFavoriteCard(card) {
+  handleCardOpen(evt) {
+
+    /**
+     * @type {URLParams}
+     */
+    const urlParams = this.getUrlParams();
+
+    urlParams.editCardId = evt.target.state.id;
+    this.setUrlParams(urlParams);
+
+  }
+
+  handleCardClose() {
+
+    /**
+     * @type {URLParams}
+     */
+    const urlParams = this.getUrlParams();
+
+    delete urlParams.editCardId;
+    this.setUrlParams(urlParams);
+
+  }
+
+  /**
+   * @param {CustomEvent & {target: CardView}} evt
+   */
+  handleFavorite(evt) {
+    const card = evt.target;
     card.state.isFavorite = !card.state.isFavorite;
     card.render();
   }
 
+  /**
+   * @param {CustomEvent<HTMLInputElement> & {target: EventEditorView}} evt
+   */
+  handleEdit(evt) {
+
+    const editorItem = evt.target;
+    const editedField = evt.detail;
+    const tripEventPoint = editorItem.state;
+
+    switch (editedField.name) {
+      case 'event-type': {
+        const offerGroups = this.model.getOfferGroups();
+        const {offers} = offerGroups.find((item) => item.type === editedField.value);
+        tripEventPoint.offerList = offers;
+
+        tripEventPoint.eventTypeList.forEach((item) => {
+          item.isSelected = item.value === editedField.value;
+        });
+
+        editorItem.renderEventTypeRelatedDetails();
+        break;
+      }
+      case 'event-destination': {
+        tripEventPoint.pointList.forEach((item) => {
+          item.isSelected = item.name === editedField.value.trim();
+        });
+        editorItem.renderDestinationDetails();
+        break;
+      }
+      default: break;
+    }
+  }
 }
 
 export default TripEventListPresenter;
-

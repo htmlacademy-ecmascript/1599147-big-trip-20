@@ -9,6 +9,15 @@ class EventEditorView extends View {
   constructor() {
     super();
     this.addEventListener('click', this.handleClick);
+    this.addEventListener('input', this.handleInput);
+  }
+
+  connectedCallback() {
+    document.addEventListener('keydown', this);
+  }
+
+  disconnectedCallback() {
+    document.removeEventListener('keydown', this);
   }
 
   /**
@@ -21,15 +30,6 @@ class EventEditorView extends View {
 
   }
 
-
-  connectedCallback() {
-    document.addEventListener('keydown', this);
-  }
-
-  disconnectedCallback() {
-    document.removeEventListener('keydown', this);
-  }
-
   /**
    * @param {KeyboardEvent} evt
    */
@@ -38,6 +38,13 @@ class EventEditorView extends View {
       evt.preventDefault();
       this.notify('closeCard');
     }
+  }
+
+  /**
+   * @param {InputEvent} evt
+   */
+  handleInput(evt) {
+    this.notify('edit', evt.target);
   }
 
   /**
@@ -109,7 +116,7 @@ class EventEditorView extends View {
       <label class="event__label  event__type-output" for="event-destination-1">
         ${checkedItem.value}
       </label>
-      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${currentPoint.name}" list="destination-list-1">
+      <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${currentPoint?.name}" list="destination-list-1">
       <datalist id="destination-list-1">
         ${eventPointList.map((item) => html`<option value="${item.name}"></option>`)}
       </datalist>
@@ -179,7 +186,7 @@ class EventEditorView extends View {
     const offerList = this.state.offerList;
 
     if (!offerList.length) {
-      return '';
+      return html``;
     }
     return html`
       <section class="event__section  event__section--offers">
@@ -206,12 +213,12 @@ class EventEditorView extends View {
    */
   createDestinationDetailsHtml() {
     const currentPoint = this.state.pointList.find((item) => item.isSelected);
-    return html`
-      <section class="event__section  event__section--destination">
-        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
-        <p class="event__destination-description">${currentPoint.description}</p>
 
-        ${currentPoint.pictures.length ? html`
+    return html`
+      <section class="event__section  event__section--destination" ${currentPoint ? '' : 'hidden'}>
+        ${currentPoint?.pictures.length ? html`
+        <h3 class="event__section-title  event__section-title--destination">Destination</h3>
+        <p class="event__destination-description">${currentPoint?.description}</p>
           <div class="event__photos-container">
             <div class="event__photos-tape">
               ${currentPoint.pictures.map((item) => html`
@@ -224,6 +231,21 @@ class EventEditorView extends View {
       </section>
     `;
   }
+
+  renderDestinationDetails() {
+    if (this.querySelector('.event__section--destination')) {
+      this.render('.event__section--destination', this.createDestinationDetailsHtml());
+    } else {
+      this.render();
+    }
+  }
+
+  renderEventTypeRelatedDetails() {
+    this.render('.event__type-wrapper', this.createEventTypeFieldHtml());
+    this.render('.event__field-group--destination', this.createDestinationHtml());
+    this.render('.event__section--offers', this.createAvailableOffersListHtml());
+  }
+
 }
 
 customElements.define('event-editor-view', EventEditorView);

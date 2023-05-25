@@ -7,6 +7,7 @@
  * @typedef {import('../views/trip-event-list-view.js').default} TripEventListView
  * @typedef {import('../views/card-view.js').default} CardView
  * @typedef {import('../views/view.js').default} View
+ * @typedef {import('../views/event-editor-view.js').default} EventEditorView
  */
 
 /**
@@ -94,7 +95,7 @@
  * @prop {string} endTime
  * @prop {string} duration
  * @prop {number} basePrice
- * @prop {Array<Offer & {isSelected: boolean}>} offerList
+ * @prop {Array<Offer & {isSelected?: boolean}>} offerList
  * @prop {boolean} isFavorite
  * @prop {boolean} isEditable
  */
