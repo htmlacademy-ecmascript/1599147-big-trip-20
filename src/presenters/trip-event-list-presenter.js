@@ -1,10 +1,6 @@
 import Presenter from './presenter.js';
-import {formatDate} from '../tools/utils.js';
-import {formatTime} from '../tools/utils.js';
-import {formatDuration} from '../tools/utils.js';
+import {formatDate, formatTime, formatDuration} from '../tools/utils.js';
 import {EVENT_TYPES_LIST} from '../config/event-types.config.js';
-// import EventEditorView from '../views/event-editor-view.js';
-
 
 /**
  * @extends {Presenter<TripEventListView, AppModel>}
@@ -157,6 +153,4 @@ class TripEventListPresenter extends Presenter {
   }
 }
 
-
 export default TripEventListPresenter;
-

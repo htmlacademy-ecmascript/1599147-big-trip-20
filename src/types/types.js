@@ -7,6 +7,7 @@
  * @typedef {import('../views/trip-event-list-view.js').default} TripEventListView
  * @typedef {import('../views/card-view.js').default} CardView
  * @typedef {import('../views/view.js').default} View
+ * @typedef {import('../views/event-editor-view.js').default} EventEditorView
  */
 
 /**
