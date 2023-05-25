@@ -3,7 +3,7 @@ import {formatDate} from '../tools/utils.js';
 import {formatTime} from '../tools/utils.js';
 import {formatDuration} from '../tools/utils.js';
 import {EVENT_TYPES_LIST} from '../config/event-types.config.js';
-import EventEditorView from '../views/event-editor-view.js';
+// import EventEditorView from '../views/event-editor-view.js';
 
 
 /**
@@ -133,12 +133,26 @@ class TripEventListPresenter extends Presenter {
     const tripEventPoint = editorItem.state;
 
     switch (editedField.name) {
-      case 'event-destination':
+      case 'event-type': {
+        const offerGroups = this.model.getOfferGroups();
+        const {offers} = offerGroups.find((item) => item.type === editedField.value);
+        tripEventPoint.offerList = offers;
+
+        tripEventPoint.eventTypeList.forEach((item) => {
+          item.isSelected = item.value === editedField.value;
+        });
+
+        editorItem.renderEventTypeRelatedDetails();
+        break;
+      }
+      case 'event-destination': {
         tripEventPoint.pointList.forEach((item) => {
           item.isSelected = item.name === editedField.value.trim();
         });
         editorItem.renderDestinationDetails();
         break;
+      }
+      default: break;
     }
   }
 }

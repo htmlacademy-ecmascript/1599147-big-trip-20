@@ -186,7 +186,7 @@ class EventEditorView extends View {
     const offerList = this.state.offerList;
 
     if (!offerList.length) {
-      return '';
+      return html``;
     }
     return html`
       <section class="event__section  event__section--offers">
@@ -239,6 +239,13 @@ class EventEditorView extends View {
       this.render();
     }
   }
+
+  renderEventTypeRelatedDetails() {
+    this.render('.event__type-wrapper', this.createEventTypeFieldHtml());
+    this.render('.event__field-group--destination', this.createDestinationHtml());
+    this.render('.event__section--offers', this.createAvailableOffersListHtml());
+  }
+
 }
 
 customElements.define('event-editor-view', EventEditorView);
