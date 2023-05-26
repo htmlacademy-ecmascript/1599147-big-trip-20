@@ -1,4 +1,4 @@
-import {FILTER_LIST} from '../config/filter.config.js';
+import {FILTER_LIST, DEFAULT_FILTER} from '../config/filter.config.js';
 import Presenter from './presenter.js';
 
 /**
@@ -11,9 +11,13 @@ class FilterPresenter extends Presenter {
    * @return {FilterState}
    */
   createViewState() {
-    // TODO: FilterViewState
 
     const filterDetails = Object.entries(FILTER_LIST);
+
+    /**
+     * @type {URLParams}
+     */
+    const {filterType = DEFAULT_FILTER } = this.getUrlParams();
 
     /**
      * @return {Array<FilterItem>}
@@ -21,12 +25,33 @@ class FilterPresenter extends Presenter {
     const items = filterDetails.map(([type, filterDescription]) => ({
       type,
       filterDescription,
-      isSelected: false,
+      isSelected: type === filterType,
       isDisabled: false
     }));
     return {items};
 
   }
+
+  /**
+   * @override
+   */
+  createEventListeners() {
+
+    this.view.addEventListener('change', this.handleFilterChange.bind(this));
+  }
+
+  /**
+   * @param {Event & {target: {value: FilterType}}} evt
+   */
+  handleFilterChange(evt) {
+
+    /**
+     * @type {URLParams}
+     */
+    const urlParams = {filterType: evt.target.value};
+    this.setUrlParams(urlParams);
+  }
+
 }
 
 export default FilterPresenter;

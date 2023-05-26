@@ -18,8 +18,8 @@
   {
     "id": "a40830fc-877f-4c06-ac35-1a9558fff9fb",
     "base_price": 7997,
-    "date_from": "2023-07-06T23:28:01.397Z",
-    "date_to": "2023-07-08T07:28:01.397Z",
+    "date_from": "2023-03-06T23:28:01.397Z",
+    "date_to": "2023-03-08T07:28:01.397Z",
     "destination": "0d1a6129-64f6-481b-bd90-59a8f6966131",
     "is_favorite": false,
     "offers": [
@@ -31,7 +31,7 @@
   {
     "id": "d4622db7-e0b7-4042-b251-748b71df52cc",
     "base_price": 6417,
-    "date_from": "2023-07-08T07:28:01.397Z",
+    "date_from": "2023-03-08T07:28:01.397Z",
     "date_to": "2023-07-10T03:28:01.397Z",
     "destination": "1ebb086d-df56-4903-83ee-a0ccfac2c2ad",
     "is_favorite": true,

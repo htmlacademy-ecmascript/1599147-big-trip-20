@@ -1,5 +1,6 @@
 import View from './view.js';
 import {html} from '../tools/utils.js';
+import 'flatpickr/dist/flatpickr.css';
 
 /**
  * @extends {View<TripInfoState>}

@@ -20,6 +20,16 @@ export default class AppModel extends Model {
   }
 
   /**
+   * @type {Record<FilterType, (item: EventPoint) => void>}
+   */
+  #filterCallbackMap = {
+    everything: () => true,
+    future: (item) => Date.parse(item.startDateTime) > Date.now(),
+    present: (item) => (Date.parse(item.startDateTime) < Date.now() && Date.parse(item.endDateTime) > Date.now()),
+    past: (item) => Date.parse(item.endDateTime) < Date.now()
+  };
+
+  /**
    * @type {Record<SortType, (a: EventPoint, b: EventPoint) => number>}
    */
   #sortCallbackMap = {
@@ -37,8 +47,12 @@ export default class AppModel extends Model {
   getEventPoints(criteria = {}) {
     const transformedEventPoints = this.#rawEventsList.map(AppModel.transformEventPoint);
     const sortCallback = this.#sortCallbackMap[criteria.sortType] ?? this.#sortCallbackMap.day;
+    const filterCallback = this.#filterCallbackMap[criteria.filterType] ?? this.#filterCallbackMap.everything;
+    // console.log(filterCallback);
 
-    return transformedEventPoints.sort(sortCallback);
+    return transformedEventPoints.filter(filterCallback).sort(sortCallback);
+    // return transformedEventPoints.sort(sortCallback);
+
   }
 
   /**
