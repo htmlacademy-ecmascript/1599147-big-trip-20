@@ -27,7 +27,7 @@ export default class AppModel extends Model {
     event: () => 0,
     time: (a, b) => AppModel.calcPointDuration(b) - AppModel.calcPointDuration(a),
     price: (a, b) => (b.basePrice - a.basePrice),
-    offers: () => 0,
+    offers: (a, b) => b.offersIdList.length - a.offersIdList.length,
   };
 
   /**

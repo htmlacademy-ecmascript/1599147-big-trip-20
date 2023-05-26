@@ -1,4 +1,4 @@
-import {SORT_LIST} from '../config/sort.config.js';
+import {SORT_LIST, DEFAULT_SORT, DISABLED_SORT_ITEMS} from '../config/sort.config.js';
 import Presenter from './presenter.js';
 
 /**
@@ -11,16 +11,16 @@ class SortPresenter extends Presenter {
    */
   createViewState() {
     const sortDetails = Object.entries(SORT_LIST);
-    const {sortType = 'day'} = this.getUrlParams();
+    const {sortType = DEFAULT_SORT } = this.getUrlParams();
 
     /**
-     * @return {Array<FilterItem>}
+     * @return {Array<SortItem>}
      */
     const items = sortDetails.map(([type, sortDescription]) => ({
       type,
       sortDescription,
       isSelected: type === sortType,
-      isDisabled: false
+      isDisabled: DISABLED_SORT_ITEMS.includes(type)
     }));
     return {items};
   }
