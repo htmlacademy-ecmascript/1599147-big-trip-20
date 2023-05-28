@@ -5,6 +5,7 @@ import Presenter from './presenter.js';
  * @extends {Presenter<SortView>}
  */
 class SortPresenter extends Presenter {
+
   /**
    * @override
    * @return {SortState}

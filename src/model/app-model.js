@@ -7,7 +7,6 @@ import {getDuration} from '../tools/utils';
 
 
 export default class AppModel extends Model {
-  // объявление приватных свойств
   #rawEventsList;
   #rawPointList;
   #rawOfferGroups;
@@ -41,17 +40,15 @@ export default class AppModel extends Model {
   };
 
   /**
-   * @param {{sortType?: SortType}} [criteria]
+   * @param {{filterType?: FilterType, sortType?: SortType}} [criteria]
    * @return {Array<EventPoint>}
    */
   getEventPoints(criteria = {}) {
     const transformedEventPoints = this.#rawEventsList.map(AppModel.transformEventPoint);
-    const sortCallback = this.#sortCallbackMap[criteria.sortType] ?? this.#sortCallbackMap.day;
     const filterCallback = this.#filterCallbackMap[criteria.filterType] ?? this.#filterCallbackMap.everything;
-    // console.log(filterCallback);
+    const sortCallback = this.#sortCallbackMap[criteria.sortType] ?? this.#sortCallbackMap.day;
 
     return transformedEventPoints.filter(filterCallback).sort(sortCallback);
-    // return transformedEventPoints.sort(sortCallback);
 
   }
 
