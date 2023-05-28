@@ -1,4 +1,8 @@
 /**
+ * @typedef {import('flatpickr/dist/types/options.js').Options} FlatpickrOptions
+ */
+
+/**
  * @typedef {import('../tools/utils.js').SafeHtml} SafeHtml
  * @typedef {import('../views/add-new-event-view.js').default} AddView
  * @typedef {import('../views/trip-info-view.js').default} TripInfoView

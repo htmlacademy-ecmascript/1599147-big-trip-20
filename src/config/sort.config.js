@@ -8,3 +8,6 @@ export const SORT_LIST = {
   price: 'Price',
   offers: 'Offers'
 };
+
+export const DEFAULT_SORT = 'day';
+export const DISABLED_SORT_ITEMS = ['event', 'offers'];

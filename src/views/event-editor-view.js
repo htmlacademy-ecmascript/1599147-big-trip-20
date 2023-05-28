@@ -1,10 +1,15 @@
 import View from './view.js';
-import {html} from '../tools/utils.js';
+import {createDatePicker, html} from '../tools/utils.js';
+import { flatpickrGlobalOptions } from '../config/flatpickr.config.js';
+
 
 /**
  * @extends {View<EventViewState>}
  */
 class EventEditorView extends View {
+
+  #startDatePicker;
+  #endDatePicker;
 
   constructor() {
     super();
@@ -13,11 +18,33 @@ class EventEditorView extends View {
   }
 
   connectedCallback() {
+    /**
+     * @type {HTMLInputElement}
+     */
+    const startTripEventDate = this.querySelector('[name =event-start-time]');
+
+    /**
+     * @type {HTMLInputElement}
+     */
+    const endTripEventDate = this.querySelector('[name =event-end-time]');
+
+    const startDatePicker = createDatePicker(startTripEventDate, flatpickrGlobalOptions);
+    const endDatePicker = createDatePicker(endTripEventDate, flatpickrGlobalOptions);
+
+    startDatePicker.set('onChange', (dates) => endDatePicker.set('minDate', dates.at(0)));
+    endDatePicker.set('minDate', startDatePicker.selectedDates.at(0));
+
+    this.#startDatePicker = startDatePicker;
+    this.#endDatePicker = endDatePicker;
+
     document.addEventListener('keydown', this);
   }
 
   disconnectedCallback() {
     document.removeEventListener('keydown', this);
+    this.#startDatePicker.destroy();
+    this.#endDatePicker.destroy();
+
   }
 
   /**
