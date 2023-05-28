@@ -21,7 +21,7 @@
  */
 
 /**
- * @typedef RawEventPoint
+ * @typedef RawTripEventPoint
  * @prop {string} id
  * @prop {EventType} type
  * @prop {string} destination
@@ -33,7 +33,7 @@
  */
 
 /**
- * @typedef EventPoint
+ * @typedef TripEventPoint
  * @prop {string} id
  * @prop {EventType} type
  * @prop {string} pointId

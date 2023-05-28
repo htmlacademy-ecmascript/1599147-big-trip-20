@@ -1,6 +1,6 @@
 import View from './view.js';
-import {createDatePicker, html} from '../tools/utils.js';
-import { flatpickrGlobalOptions } from '../config/flatpickr.config.js';
+import { html} from '../tools/utils.js';
+import {createPairDatePicker, flatpickrGlobalOptions} from '../tools/date-picker.js';
 
 
 /**
@@ -8,8 +8,7 @@ import { flatpickrGlobalOptions } from '../config/flatpickr.config.js';
  */
 class EventEditorView extends View {
 
-  #startDatePicker;
-  #endDatePicker;
+  #tripEditorDatePicker;
 
   constructor() {
     super();
@@ -28,23 +27,14 @@ class EventEditorView extends View {
      */
     const endTripEventDate = this.querySelector('[name =event-end-time]');
 
-    const startDatePicker = createDatePicker(startTripEventDate, flatpickrGlobalOptions);
-    const endDatePicker = createDatePicker(endTripEventDate, flatpickrGlobalOptions);
-
-    startDatePicker.set('onChange', (dates) => endDatePicker.set('minDate', dates.at(0)));
-    endDatePicker.set('minDate', startDatePicker.selectedDates.at(0));
-
-    this.#startDatePicker = startDatePicker;
-    this.#endDatePicker = endDatePicker;
+    this.#tripEditorDatePicker = createPairDatePicker(startTripEventDate, endTripEventDate, flatpickrGlobalOptions);
 
     document.addEventListener('keydown', this);
   }
 
   disconnectedCallback() {
     document.removeEventListener('keydown', this);
-    this.#startDatePicker.destroy();
-    this.#endDatePicker.destroy();
-
+    this.#tripEditorDatePicker();
   }
 
   /**
@@ -54,7 +44,6 @@ class EventEditorView extends View {
     if (evt.target.closest('.event__rollup-btn')) {
       this.notify('closeCard');
     }
-
   }
 
   /**
@@ -135,8 +124,8 @@ class EventEditorView extends View {
    */
   createDestinationHtml() {
     const checkedItem = this.state.eventTypeList.find((item) => item.isSelected);
-    const eventPointList = this.state.pointList;
-    const currentPoint = eventPointList.find((item) => item.isSelected);
+    const tripEventPointList = this.state.pointList;
+    const currentPoint = tripEventPointList.find((item) => item.isSelected);
 
     return html`
     <div class="event__field-group  event__field-group--destination">
@@ -145,7 +134,7 @@ class EventEditorView extends View {
       </label>
       <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${currentPoint?.name}" list="destination-list-1">
       <datalist id="destination-list-1">
-        ${eventPointList.map((item) => html`<option value="${item.name}"></option>`)}
+        ${tripEventPointList.map((item) => html`<option value="${item.name}"></option>`)}
       </datalist>
     </div>
     `;

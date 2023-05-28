@@ -1,25 +1,25 @@
 // @ts-nocheck
 import Model from './model';
-import rawEventsList from '../mocks/trip-event-mocks.json';
+import rawEventPointsList from '../mocks/trip-event-mocks.json';
 import rawPointList from '../mocks/point-list-mocks.json';
 import rawOfferGroups from '../mocks/offer-list-mocks.json';
 import {getDuration} from '../tools/utils';
 
 
 export default class AppModel extends Model {
-  #rawEventsList;
+  #rawEventPointsList;
   #rawPointList;
   #rawOfferGroups;
 
   constructor() {
     super();
-    this.#rawEventsList = rawEventsList;
+    this.#rawEventPointsList = rawEventPointsList;
     this.#rawOfferGroups = rawOfferGroups;
     this.#rawPointList = rawPointList;
   }
 
   /**
-   * @type {Record<FilterType, (item: EventPoint) => void>}
+   * @type {Record<FilterType, (item: TripEventPoint) => void>}
    */
   #filterCallbackMap = {
     everything: () => true,
@@ -29,7 +29,7 @@ export default class AppModel extends Model {
   };
 
   /**
-   * @type {Record<SortType, (a: EventPoint, b: EventPoint) => number>}
+   * @type {Record<SortType, (a: TripEventPoint, b: TripEventPoint) => number>}
    */
   #sortCallbackMap = {
     day: (a, b) => Date.parse(a.startDateTime) - Date.parse(b.startDateTime),
@@ -41,14 +41,14 @@ export default class AppModel extends Model {
 
   /**
    * @param {{filterType?: FilterType, sortType?: SortType}} [criteria]
-   * @return {Array<EventPoint>}
+   * @return {Array<TripEventPoint>}
    */
-  getEventPoints(criteria = {}) {
-    const transformedEventPoints = this.#rawEventsList.map(AppModel.transformEventPoint);
+  getTripEventPoints(criteria = {}) {
+    const transformedTripEventPoints = this.#rawEventPointsList.map(AppModel.transformTripEventPoint);
     const filterCallback = this.#filterCallbackMap[criteria.filterType] ?? this.#filterCallbackMap.everything;
     const sortCallback = this.#sortCallbackMap[criteria.sortType] ?? this.#sortCallbackMap.day;
 
-    return transformedEventPoints.filter(filterCallback).sort(sortCallback);
+    return transformedTripEventPoints.filter(filterCallback).sort(sortCallback);
 
   }
 
@@ -68,25 +68,25 @@ export default class AppModel extends Model {
   }
 
   /**
-   * @param {RawEventPoint} eventPoint
-   * @return {EventPoint}
+   * @param {RawTripEventPoint} tripEventPoint
+   * @return {TripEventPoint}
    */
-  static transformEventPoint(eventPoint) {
+  static transformTripEventPoint(tripEventPoint) {
     return {
-      id: eventPoint.id,
-      type: eventPoint.type,
-      pointId: eventPoint.destination,
-      startDateTime: eventPoint.date_from,
-      endDateTime: eventPoint.date_to,
-      basePrice: eventPoint.base_price,
-      offersIdList: eventPoint.offers,
-      isFavorite: eventPoint.is_favorite
+      id: tripEventPoint.id,
+      type: tripEventPoint.type,
+      pointId: tripEventPoint.destination,
+      startDateTime: tripEventPoint.date_from,
+      endDateTime: tripEventPoint.date_to,
+      basePrice: tripEventPoint.base_price,
+      offersIdList: tripEventPoint.offers,
+      isFavorite: tripEventPoint.is_favorite
     };
 
   }
 
   /**
-   * @param {EventPoint} point
+   * @param {TripEventPoint} point
    */
   static calcPointDuration(point) {
     return getDuration(point.endDateTime, point.startDateTime);

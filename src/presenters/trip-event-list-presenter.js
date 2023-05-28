@@ -17,14 +17,14 @@ class TripEventListPresenter extends Presenter {
     const urlParams = this.getUrlParams();
 
 
-    const eventPoints = this.model.getEventPoints(urlParams);
-    const items = eventPoints.map((value) => this.createEventViewState(value));
+    const tripEventPoints = this.model.getTripEventPoints(urlParams);
+    const items = tripEventPoints.map((value) => this.createEventViewState(value));
 
     return {items};
   }
 
   /**
-   * @param {EventPoint} tripEventItem
+   * @param {TripEventPoint} tripEventItem
    * @return {EventViewState}
    */
   createEventViewState(tripEventItem) {

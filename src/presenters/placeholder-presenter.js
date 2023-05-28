@@ -15,7 +15,7 @@ class PlaceholderPresenter extends Presenter {
      */
     const urlParams = this.getUrlParams();
 
-    const tripEvents = this.model.getEventPoints(urlParams);
+    const tripEvents = this.model.getTripEventPoints(urlParams);
 
     return {
       text: PLACEHOLDER_TEXT_LIST[urlParams.filterType] ?? PLACEHOLDER_TEXT_LIST.everything,

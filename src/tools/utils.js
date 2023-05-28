@@ -2,8 +2,6 @@ import {escape as escapeHtml} from 'he';
 import dayjs from 'dayjs';
 import durationPlugin from 'dayjs/plugin/duration';
 import {DURATION_FORMATS} from '../config/date-time.config.js';
-import flatpickr from 'flatpickr';
-import 'flatpickr/dist/flatpickr.css';
 
 dayjs.extend(durationPlugin);
 
@@ -98,6 +96,5 @@ const formatDuration = (startDateTime, endDateTime) => {
 /**
  * @param {HTMLInputElement} element
  */
-const createDatePicker = (element, options) => flatpickr(element, options);
 
-export {SafeHtml, html, getRandomInteger, getRandomItem, formatDate, formatTime, formatDuration, getDuration, createDatePicker };
+export {SafeHtml, html, getRandomInteger, getRandomItem, formatDate, formatTime, formatDuration, getDuration };
