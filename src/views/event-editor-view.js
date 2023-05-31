@@ -14,6 +14,7 @@ class EventEditorView extends View {
     super();
     this.addEventListener('click', this.handleClick);
     this.addEventListener('input', this.handleInput);
+    this.addEventListener('submit', this.handleSubmit);
   }
 
   connectedCallback() {
@@ -50,9 +51,12 @@ class EventEditorView extends View {
    * @param {KeyboardEvent} evt
    */
   handleEvent(evt) {
+
     if (evt.key === 'Escape') {
-      evt.preventDefault();
-      this.notify('closeCard');
+      const isDispatch = this.notify('closeCard');
+      if (!isDispatch) {
+        evt.preventDefault();
+      }
     }
   }
 
@@ -61,6 +65,18 @@ class EventEditorView extends View {
    */
   handleInput(evt) {
     this.notify('edit', evt.target);
+  }
+
+  /**
+   * @param {SubmitEvent} evt
+   */
+  handleSubmit(evt) {
+    const isDispatch = this.notify('save');
+
+    if (!isDispatch) {
+      evt.preventDefault();
+    }
+    this.notify('closeCard');
   }
 
   /**
@@ -211,7 +227,7 @@ class EventEditorView extends View {
         <div class="event__available-offers">
           ${offerList.map((item) => html`
             <div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="${item.id}" type="checkbox" name="event-offer" ${item.isSelected ? 'checked' : ''}>
+              <input class="event__offer-checkbox  visually-hidden" id="${item.id}" type="checkbox" name="event-offer" value=${item.id} ${item.isSelected ? 'checked' : ''}>
               <label class="event__offer-label" for="${item.id}">
                 <span class="event__offer-title">${item.title}</span>
                 &plus;&euro;&nbsp;

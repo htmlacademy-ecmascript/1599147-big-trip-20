@@ -100,6 +100,7 @@ class TripEventListPresenter extends Presenter {
     this.view.addEventListener('closeCard', this.handleCardClose.bind(this));
     this.view.addEventListener('favorite', this.handleFavorite.bind(this));
     this.view.addEventListener('edit', this.handleEdit.bind(this));
+    this.view.addEventListener('save', this.handleSave.bind(this));
 
   }
 
@@ -118,7 +119,12 @@ class TripEventListPresenter extends Presenter {
 
   }
 
-  handleCardClose() {
+  /**
+   * @param {CustomEvent} evt
+   */
+  handleCardClose(evt) {
+
+    evt.preventDefault();
 
     /**
      * @type {URLParams}
@@ -169,8 +175,39 @@ class TripEventListPresenter extends Presenter {
         editorItem.renderDestinationDetails();
         break;
       }
+      case 'event-start-time': {
+        tripEventPoint.startDateTime = editedField.value;
+        break;
+      }
+      case 'event-end-time': {
+        tripEventPoint.endDateTime = editedField.value;
+        break;
+      }
+      case 'event-price': {
+        tripEventPoint.basePrice = Number(editedField.value);
+        break;
+      }
+      case 'event-offer': {
+        const changedOffer = tripEventPoint.offerList.find((item) => item.id === editedField.value);
+
+        changedOffer.isSelected = !changedOffer.isSelected;
+        break;
+      }
+
       default: break;
     }
+  }
+
+  /**
+   *
+   * @param {CustomEvent & {target: EventEditorView}} evt
+   */
+  handleSave(evt) {
+    evt.preventDefault();
+    const card = evt.target;
+    this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
+    this.handleCardClose(evt);
+
   }
 }
 
