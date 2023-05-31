@@ -1,19 +1,19 @@
 // @ts-nocheck
 import Model from './model';
-import rawEventPointsList from '../mocks/trip-event-mocks.json';
+import rawTripEventPointsList from '../mocks/trip-event-mocks.json';
 import rawPointList from '../mocks/point-list-mocks.json';
 import rawOfferGroups from '../mocks/offer-list-mocks.json';
 import {getDuration} from '../tools/utils';
 
 
 export default class AppModel extends Model {
-  #rawEventPointsList;
+  #rawTripEventPointsList;
   #rawPointList;
   #rawOfferGroups;
 
   constructor() {
     super();
-    this.#rawEventPointsList = rawEventPointsList;
+    this.#rawTripEventPointsList = rawTripEventPointsList;
     this.#rawOfferGroups = rawOfferGroups;
     this.#rawPointList = rawPointList;
   }
@@ -44,12 +44,21 @@ export default class AppModel extends Model {
    * @return {Array<TripEventPoint>}
    */
   getTripEventPoints(criteria = {}) {
-    const transformedTripEventPoints = this.#rawEventPointsList.map(AppModel.transformTripEventPoint);
+    const transformedTripEventPoints = this.#rawTripEventPointsList.map(AppModel.transformTripEventPointToClient);
     const filterCallback = this.#filterCallbackMap[criteria.filterType] ?? this.#filterCallbackMap.everything;
     const sortCallback = this.#sortCallbackMap[criteria.sortType] ?? this.#sortCallbackMap.day;
 
     return transformedTripEventPoints.filter(filterCallback).sort(sortCallback);
+  }
 
+  /**
+   * @param {TripEventPoint} tripEventPoint
+   */
+  updateTripEventPoint(tripEventPoint) {
+    const rawPoint = (AppModel.transformTripEventPointToServer(tripEventPoint));
+    const index = this.#rawTripEventPointsList.findIndex((item) => item.id === rawPoint.id);
+
+    this.#rawTripEventPointsList.splice(index, 1, rawPoint);
   }
 
   /**
@@ -68,21 +77,37 @@ export default class AppModel extends Model {
   }
 
   /**
-   * @param {RawTripEventPoint} tripEventPoint
+   * @param {RawTripEventPoint} rawTripEventPoint
    * @return {TripEventPoint}
    */
-  static transformTripEventPoint(tripEventPoint) {
+  static transformTripEventPointToClient(rawTripEventPoint) {
     return {
-      id: tripEventPoint.id,
-      type: tripEventPoint.type,
-      pointId: tripEventPoint.destination,
-      startDateTime: tripEventPoint.date_from,
-      endDateTime: tripEventPoint.date_to,
-      basePrice: tripEventPoint.base_price,
-      offersIdList: tripEventPoint.offers,
-      isFavorite: tripEventPoint.is_favorite
+      id: rawTripEventPoint.id,
+      type: rawTripEventPoint.type,
+      pointId: rawTripEventPoint.destination,
+      startDateTime: rawTripEventPoint.date_from,
+      endDateTime: rawTripEventPoint.date_to,
+      basePrice: rawTripEventPoint.base_price,
+      offersIdList: rawTripEventPoint.offers,
+      isFavorite: rawTripEventPoint.is_favorite
     };
+  }
 
+  /**
+   * @param {TripEventPoint} tripEventPoint
+   * @return {RawTripEventPoint}
+   */
+  static transformTripEventPointToServer(tripEventPoint) {
+    return {
+      'id': tripEventPoint.id,
+      'type': tripEventPoint.type,
+      'destination': tripEventPoint.pointId,
+      'date_from': tripEventPoint.startDateTime,
+      'date_to': tripEventPoint.endDateTime,
+      'base_price': tripEventPoint.basePrice,
+      'offers': tripEventPoint.offersIdList,
+      'is_favorite': tripEventPoint.isFavorite
+    };
   }
 
   /**

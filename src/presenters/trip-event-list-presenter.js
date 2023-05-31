@@ -72,6 +72,26 @@ class TripEventListPresenter extends Presenter {
   }
 
   /**
+   *
+   * @param {EventViewState} pointState
+   * @return {TripEventPoint}
+   */
+  createSerializedPoint(pointState) {
+
+    return {
+      id: pointState.id,
+      type: pointState.eventTypeList.find((item) => item.isSelected === true).value,
+      pointId: pointState.pointList.find((item) => item.isSelected === true).id,
+      startDateTime: pointState.startDateTime,
+      endDateTime: pointState.endDateTime,
+      basePrice: pointState.basePrice,
+      offersIdList: pointState.offerList.filter((item) => item.isSelected === true).map((item) => item.id),
+      isFavorite: pointState.isFavorite
+    };
+  }
+
+
+  /**
    * @override
    */
   createEventListeners() {
@@ -116,6 +136,7 @@ class TripEventListPresenter extends Presenter {
   handleFavorite(evt) {
     const card = evt.target;
     card.state.isFavorite = !card.state.isFavorite;
+    this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
     card.render();
   }
 
