@@ -15,6 +15,8 @@ class EventEditorView extends View {
     this.addEventListener('click', this.handleClick);
     this.addEventListener('input', this.handleInput);
     this.addEventListener('submit', this.handleSubmit);
+    this.addEventListener('reset', this.handleReset);
+
   }
 
   connectedCallback() {
@@ -76,8 +78,19 @@ class EventEditorView extends View {
     if (!isDispatch) {
       evt.preventDefault();
     }
-    this.notify('closeCard');
   }
+
+  /**
+   * @param {Event} evt
+   */
+  handleReset(evt) {
+    const isDispatch = this.notify('delete');
+
+    if (!isDispatch) {
+      evt.preventDefault();
+    }
+  }
+
 
   /**
    * @override

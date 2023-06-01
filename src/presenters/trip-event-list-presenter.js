@@ -95,13 +95,12 @@ class TripEventListPresenter extends Presenter {
    * @override
    */
   createEventListeners() {
-
     this.view.addEventListener('openCard', this.handleCardOpen.bind(this));
     this.view.addEventListener('closeCard', this.handleCardClose.bind(this));
     this.view.addEventListener('favorite', this.handleFavorite.bind(this));
     this.view.addEventListener('edit', this.handleEdit.bind(this));
     this.view.addEventListener('save', this.handleSave.bind(this));
-
+    this.view.addEventListener('delete', this.handleDelete.bind(this));
   }
 
   /**
@@ -199,13 +198,24 @@ class TripEventListPresenter extends Presenter {
   }
 
   /**
-   *
    * @param {CustomEvent & {target: EventEditorView}} evt
    */
   handleSave(evt) {
     evt.preventDefault();
     const card = evt.target;
     this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
+    this.handleCardClose(evt);
+
+  }
+
+  /**
+   * @param {CustomEvent & {target: EventEditorView}} evt
+   */
+  handleDelete(evt) {
+    evt.preventDefault();
+    const card = evt.target;
+    // console.log(card.state);
+    this.model.deleteTripEventPoint(this.createSerializedPoint(card.state));
     this.handleCardClose(evt);
 
   }

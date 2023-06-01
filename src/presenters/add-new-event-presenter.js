@@ -9,7 +9,7 @@ class AddNewEventPresenter extends Presenter {
    * @return {AddNewEventState}
    */
   createViewState() {
-    // TODO: AddNewEventViewState
+
     return {
       isDisabled: true
     };
