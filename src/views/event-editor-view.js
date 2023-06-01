@@ -42,7 +42,7 @@ class EventEditorView extends View {
 
   /**
    *  @param {MouseEvent & {target: Element}} evt
-  */
+   */
   handleClick(evt) {
     if (evt.target.closest('.event__rollup-btn')) {
       this.notify('closeCard');
@@ -84,7 +84,7 @@ class EventEditorView extends View {
    * @param {Event} evt
    */
   handleReset(evt) {
-    const isDispatch = this.notify('delete');
+    const isDispatch = this.notify(this.state.isDraft ? 'closeCard' : 'delete');
 
     if (!isDispatch) {
       evt.preventDefault();
@@ -210,6 +210,11 @@ class EventEditorView extends View {
    * @return {SafeHtml}
    */
   createResetHtml() {
+
+    if (this.state.isDraft) {
+      return html`<button class="event__reset-btn" type="reset">Cancel</button>`;
+    }
+
     return html`<button class="event__reset-btn" type="reset">Delete</button>`;
   }
 
@@ -217,6 +222,9 @@ class EventEditorView extends View {
    * @return {SafeHtml}
    */
   createCloseHtml() {
+    if (this.state.isDraft) {
+      return '';
+    }
     return html`
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Close event</span>

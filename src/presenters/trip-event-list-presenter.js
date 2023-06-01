@@ -1,6 +1,7 @@
 import Presenter from './presenter.js';
 import {formatDate, formatTime, formatDuration} from '../tools/utils.js';
 import {EVENT_TYPES_LIST} from '../config/event-types.config.js';
+import {NEW_TRIP_EVENT_STATE} from '../config/new-event-point.template.js';
 
 /**
  * @extends {Presenter<TripEventListView, AppModel>}
@@ -15,16 +16,19 @@ class TripEventListPresenter extends Presenter {
      * @type {URLParams}
      */
     const urlParams = this.getUrlParams();
-
-
     const tripEventPoints = this.model.getTripEventPoints(urlParams);
     const items = tripEventPoints.map((value) => this.createEventViewState(value));
+
+    if (urlParams.editCardId === 'draft') {
+      const draftPoint = NEW_TRIP_EVENT_STATE;
+      items.unshift(this.createEventViewState(draftPoint));
+    }
 
     return {items};
   }
 
   /**
-   * @param {TripEventPoint} tripEventItem
+   * @param {Partial<TripEventPoint>} tripEventItem
    * @return {EventViewState}
    */
   createEventViewState(tripEventItem) {
@@ -50,8 +54,10 @@ class TripEventListPresenter extends Presenter {
     }));
 
     const offers = offerGroups.find((item) => item.type === tripEventItem.type).offers;
-
     const offerList = offers.map((item) => ({...item, isSelected: tripEventItem.offersIdList.includes(item.id)}));
+
+    const isDraft = tripEventItem.id === undefined;
+    const isEditable = isDraft || tripEventItem.id === urlParams.editCardId;
 
     return {
       id: tripEventItem.id,
@@ -67,21 +73,26 @@ class TripEventListPresenter extends Presenter {
       basePrice: tripEventItem.basePrice,
       offerList,
       isFavorite: tripEventItem.isFavorite,
-      isEditable: tripEventItem.id === urlParams.editCardId
+      isEditable,
+      isDraft,
     };
   }
 
   /**
-   *
    * @param {EventViewState} pointState
    * @return {TripEventPoint}
    */
   createSerializedPoint(pointState) {
+    const selectedPoint = pointState.pointList.find((item) => item.isSelected === true);
+
+    if (pointState.isDraft) {
+      pointState.id = crypto.randomUUID();
+    }
 
     return {
       id: pointState.id,
       type: pointState.eventTypeList.find((item) => item.isSelected === true).value,
-      pointId: pointState.pointList.find((item) => item.isSelected === true).id,
+      pointId: selectedPoint ? selectedPoint.id : '',
       startDateTime: pointState.startDateTime,
       endDateTime: pointState.endDateTime,
       basePrice: pointState.basePrice,
@@ -89,7 +100,6 @@ class TripEventListPresenter extends Presenter {
       isFavorite: pointState.isFavorite
     };
   }
-
 
   /**
    * @override
@@ -115,7 +125,6 @@ class TripEventListPresenter extends Presenter {
 
     urlParams.editCardId = evt.target.state.id;
     this.setUrlParams(urlParams);
-
   }
 
   /**
@@ -132,7 +141,6 @@ class TripEventListPresenter extends Presenter {
 
     delete urlParams.editCardId;
     this.setUrlParams(urlParams);
-
   }
 
   /**
@@ -140,6 +148,7 @@ class TripEventListPresenter extends Presenter {
    */
   handleFavorite(evt) {
     const card = evt.target;
+
     card.state.isFavorite = !card.state.isFavorite;
     this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
     card.render();
@@ -201,11 +210,17 @@ class TripEventListPresenter extends Presenter {
    * @param {CustomEvent & {target: EventEditorView}} evt
    */
   handleSave(evt) {
+    //TODO  может развести на 2 метода - сохранение и добавление? (надо посмотреть на взаимодействие с сервером)
+
     evt.preventDefault();
     const card = evt.target;
-    this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
-    this.handleCardClose(evt);
 
+    if (card.state.isDraft) {
+      this.model.createTripEventPoint(this.createSerializedPoint(card.state));
+    } else {
+      this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
+    }
+    this.handleCardClose(evt);
   }
 
   /**
@@ -214,7 +229,6 @@ class TripEventListPresenter extends Presenter {
   handleDelete(evt) {
     evt.preventDefault();
     const card = evt.target;
-    // console.log(card.state);
     this.model.deleteTripEventPoint(this.createSerializedPoint(card.state));
     this.handleCardClose(evt);
 

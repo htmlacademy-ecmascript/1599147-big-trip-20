@@ -54,6 +54,16 @@ export default class AppModel extends Model {
   /**
    * @param {TripEventPoint} tripEventPoint
    */
+  createTripEventPoint(tripEventPoint) {
+    const rawPoint = (AppModel.transformTripEventPointToServer(tripEventPoint));
+    // console.log(rawPoint);
+    this.#rawTripEventPointsList.push(rawPoint);
+  }
+
+
+  /**
+   * @param {TripEventPoint} tripEventPoint
+   */
   updateTripEventPoint(tripEventPoint) {
     const rawPoint = (AppModel.transformTripEventPointToServer(tripEventPoint));
     const index = this.#rawTripEventPointsList.findIndex((item) => item.id === rawPoint.id);

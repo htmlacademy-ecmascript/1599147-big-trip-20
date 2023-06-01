@@ -10,10 +10,34 @@ class AddNewEventPresenter extends Presenter {
    */
   createViewState() {
 
+    /**
+     * @type {URLParams}
+     */
+    const urlParams = this.getUrlParams();
+
     return {
-      isDisabled: true
+      isDisabled: urlParams.editCardId === 'draft'
     };
   }
+
+  /**
+   * @override
+   */
+  createEventListeners() {
+
+    this.view.addEventListener('click', this.handleAddNewClick.bind(this));
+  }
+
+  handleAddNewClick() {
+
+    /**
+     * @type {URLParams}
+     */
+    const urlParams = {editCardId: 'draft'};
+
+    this.setUrlParams(urlParams);
+  }
+
 }
 
 export default AddNewEventPresenter;
