@@ -1,6 +1,6 @@
 import View from './view.js';
-import {createDatePicker, html} from '../tools/utils.js';
-import { flatpickrGlobalOptions } from '../config/flatpickr.config.js';
+import { html} from '../tools/utils.js';
+import {createPairDatePicker, flatpickrGlobalOptions} from '../tools/date-picker.js';
 
 
 /**
@@ -8,13 +8,15 @@ import { flatpickrGlobalOptions } from '../config/flatpickr.config.js';
  */
 class EventEditorView extends View {
 
-  #startDatePicker;
-  #endDatePicker;
+  #tripEditorDatePicker;
 
   constructor() {
     super();
     this.addEventListener('click', this.handleClick);
     this.addEventListener('input', this.handleInput);
+    this.addEventListener('submit', this.handleSubmit);
+    this.addEventListener('reset', this.handleReset);
+
   }
 
   connectedCallback() {
@@ -28,42 +30,35 @@ class EventEditorView extends View {
      */
     const endTripEventDate = this.querySelector('[name =event-end-time]');
 
-    const startDatePicker = createDatePicker(startTripEventDate, flatpickrGlobalOptions);
-    const endDatePicker = createDatePicker(endTripEventDate, flatpickrGlobalOptions);
-
-    startDatePicker.set('onChange', (dates) => endDatePicker.set('minDate', dates.at(0)));
-    endDatePicker.set('minDate', startDatePicker.selectedDates.at(0));
-
-    this.#startDatePicker = startDatePicker;
-    this.#endDatePicker = endDatePicker;
+    this.#tripEditorDatePicker = createPairDatePicker(startTripEventDate, endTripEventDate, flatpickrGlobalOptions);
 
     document.addEventListener('keydown', this);
   }
 
   disconnectedCallback() {
     document.removeEventListener('keydown', this);
-    this.#startDatePicker.destroy();
-    this.#endDatePicker.destroy();
-
+    this.#tripEditorDatePicker();
   }
 
   /**
    *  @param {MouseEvent & {target: Element}} evt
-  */
+   */
   handleClick(evt) {
     if (evt.target.closest('.event__rollup-btn')) {
       this.notify('closeCard');
     }
-
   }
 
   /**
    * @param {KeyboardEvent} evt
    */
   handleEvent(evt) {
+
     if (evt.key === 'Escape') {
-      evt.preventDefault();
-      this.notify('closeCard');
+      const isDispatch = this.notify('closeCard');
+      if (!isDispatch) {
+        evt.preventDefault();
+      }
     }
   }
 
@@ -73,6 +68,29 @@ class EventEditorView extends View {
   handleInput(evt) {
     this.notify('edit', evt.target);
   }
+
+  /**
+   * @param {SubmitEvent} evt
+   */
+  handleSubmit(evt) {
+    const isDispatch = this.notify('save');
+
+    if (!isDispatch) {
+      evt.preventDefault();
+    }
+  }
+
+  /**
+   * @param {Event} evt
+   */
+  handleReset(evt) {
+    const isDispatch = this.notify(this.state.isDraft ? 'closeCard' : 'delete');
+
+    if (!isDispatch) {
+      evt.preventDefault();
+    }
+  }
+
 
   /**
    * @override
@@ -135,8 +153,8 @@ class EventEditorView extends View {
    */
   createDestinationHtml() {
     const checkedItem = this.state.eventTypeList.find((item) => item.isSelected);
-    const eventPointList = this.state.pointList;
-    const currentPoint = eventPointList.find((item) => item.isSelected);
+    const tripEventPointList = this.state.pointList;
+    const currentPoint = tripEventPointList.find((item) => item.isSelected);
 
     return html`
     <div class="event__field-group  event__field-group--destination">
@@ -145,7 +163,7 @@ class EventEditorView extends View {
       </label>
       <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${currentPoint?.name}" list="destination-list-1">
       <datalist id="destination-list-1">
-        ${eventPointList.map((item) => html`<option value="${item.name}"></option>`)}
+        ${tripEventPointList.map((item) => html`<option value="${item.name}"></option>`)}
       </datalist>
     </div>
     `;
@@ -176,7 +194,7 @@ class EventEditorView extends View {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${this.state.basePrice}">
+        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${this.state.basePrice}">
       </div>
     `;
   }
@@ -192,6 +210,11 @@ class EventEditorView extends View {
    * @return {SafeHtml}
    */
   createResetHtml() {
+
+    if (this.state.isDraft) {
+      return html`<button class="event__reset-btn" type="reset">Cancel</button>`;
+    }
+
     return html`<button class="event__reset-btn" type="reset">Delete</button>`;
   }
 
@@ -199,6 +222,9 @@ class EventEditorView extends View {
    * @return {SafeHtml}
    */
   createCloseHtml() {
+    if (this.state.isDraft) {
+      return '';
+    }
     return html`
       <button class="event__rollup-btn" type="button">
         <span class="visually-hidden">Close event</span>
@@ -222,7 +248,7 @@ class EventEditorView extends View {
         <div class="event__available-offers">
           ${offerList.map((item) => html`
             <div class="event__offer-selector">
-              <input class="event__offer-checkbox  visually-hidden" id="${item.id}" type="checkbox" name="event-offer" ${item.isSelected ? 'checked' : ''}>
+              <input class="event__offer-checkbox  visually-hidden" id="${item.id}" type="checkbox" name="event-offer" value=${item.id} ${item.isSelected ? 'checked' : ''}>
               <label class="event__offer-label" for="${item.id}">
                 <span class="event__offer-title">${item.title}</span>
                 &plus;&euro;&nbsp;

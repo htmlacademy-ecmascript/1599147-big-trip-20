@@ -7,3 +7,5 @@ export const FILTER_LIST = {
   present: 'Present',
   past: 'Past',
 };
+
+export const DEFAULT_FILTER = 'everything';

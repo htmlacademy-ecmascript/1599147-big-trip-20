@@ -105,12 +105,13 @@ class CardView extends View {
    * @return {SafeHtml}
    */
   createSelectedOffersHtml() {
-    //
+
     const selectedOffers = this.state.offerList.filter((item) => item.isSelected);
-    // console.log(selectedOffers);
+
     if (!selectedOffers.length) {
       return '';
     }
+
     return html`
       <h4 class="visually-hidden">Offers:</h4>
       <ul class="event__selected-offers">

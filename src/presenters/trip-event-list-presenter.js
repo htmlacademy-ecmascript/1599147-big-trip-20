@@ -1,6 +1,7 @@
 import Presenter from './presenter.js';
 import {formatDate, formatTime, formatDuration} from '../tools/utils.js';
 import {EVENT_TYPES_LIST} from '../config/event-types.config.js';
+import {NEW_TRIP_EVENT_STATE} from '../config/new-event-point.template.js';
 
 /**
  * @extends {Presenter<TripEventListView, AppModel>}
@@ -15,16 +16,19 @@ class TripEventListPresenter extends Presenter {
      * @type {URLParams}
      */
     const urlParams = this.getUrlParams();
+    const tripEventPoints = this.model.getTripEventPoints(urlParams);
+    const items = tripEventPoints.map((value) => this.createEventViewState(value));
 
-
-    const eventPoints = this.model.getEventPoints(urlParams);
-    const items = eventPoints.map((value) => this.createEventViewState(value));
+    if (urlParams.editCardId === 'draft') {
+      const draftPoint = NEW_TRIP_EVENT_STATE;
+      items.unshift(this.createEventViewState(draftPoint));
+    }
 
     return {items};
   }
 
   /**
-   * @param {EventPoint} tripEventItem
+   * @param {Partial<TripEventPoint>} tripEventItem
    * @return {EventViewState}
    */
   createEventViewState(tripEventItem) {
@@ -50,8 +54,10 @@ class TripEventListPresenter extends Presenter {
     }));
 
     const offers = offerGroups.find((item) => item.type === tripEventItem.type).offers;
-
     const offerList = offers.map((item) => ({...item, isSelected: tripEventItem.offersIdList.includes(item.id)}));
+
+    const isDraft = tripEventItem.id === undefined;
+    const isEditable = isDraft || tripEventItem.id === urlParams.editCardId;
 
     return {
       id: tripEventItem.id,
@@ -67,7 +73,31 @@ class TripEventListPresenter extends Presenter {
       basePrice: tripEventItem.basePrice,
       offerList,
       isFavorite: tripEventItem.isFavorite,
-      isEditable: tripEventItem.id === urlParams.editCardId
+      isEditable,
+      isDraft,
+    };
+  }
+
+  /**
+   * @param {EventViewState} pointState
+   * @return {TripEventPoint}
+   */
+  createSerializedPoint(pointState) {
+    const selectedPoint = pointState.pointList.find((item) => item.isSelected === true);
+
+    if (pointState.isDraft) {
+      pointState.id = crypto.randomUUID();
+    }
+
+    return {
+      id: pointState.id,
+      type: pointState.eventTypeList.find((item) => item.isSelected === true).value,
+      pointId: selectedPoint ? selectedPoint.id : '',
+      startDateTime: pointState.startDateTime,
+      endDateTime: pointState.endDateTime,
+      basePrice: pointState.basePrice,
+      offersIdList: pointState.offerList.filter((item) => item.isSelected === true).map((item) => item.id),
+      isFavorite: pointState.isFavorite
     };
   }
 
@@ -75,12 +105,12 @@ class TripEventListPresenter extends Presenter {
    * @override
    */
   createEventListeners() {
-
     this.view.addEventListener('openCard', this.handleCardOpen.bind(this));
     this.view.addEventListener('closeCard', this.handleCardClose.bind(this));
     this.view.addEventListener('favorite', this.handleFavorite.bind(this));
     this.view.addEventListener('edit', this.handleEdit.bind(this));
-
+    this.view.addEventListener('save', this.handleSave.bind(this));
+    this.view.addEventListener('delete', this.handleDelete.bind(this));
   }
 
   /**
@@ -95,10 +125,14 @@ class TripEventListPresenter extends Presenter {
 
     urlParams.editCardId = evt.target.state.id;
     this.setUrlParams(urlParams);
-
   }
 
-  handleCardClose() {
+  /**
+   * @param {CustomEvent} evt
+   */
+  handleCardClose(evt) {
+
+    evt.preventDefault();
 
     /**
      * @type {URLParams}
@@ -107,7 +141,6 @@ class TripEventListPresenter extends Presenter {
 
     delete urlParams.editCardId;
     this.setUrlParams(urlParams);
-
   }
 
   /**
@@ -115,7 +148,9 @@ class TripEventListPresenter extends Presenter {
    */
   handleFavorite(evt) {
     const card = evt.target;
+
     card.state.isFavorite = !card.state.isFavorite;
+    this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
     card.render();
   }
 
@@ -148,8 +183,55 @@ class TripEventListPresenter extends Presenter {
         editorItem.renderDestinationDetails();
         break;
       }
+      case 'event-start-time': {
+        tripEventPoint.startDateTime = editedField.value;
+        break;
+      }
+      case 'event-end-time': {
+        tripEventPoint.endDateTime = editedField.value;
+        break;
+      }
+      case 'event-price': {
+        tripEventPoint.basePrice = Number(editedField.value);
+        break;
+      }
+      case 'event-offer': {
+        const changedOffer = tripEventPoint.offerList.find((item) => item.id === editedField.value);
+
+        changedOffer.isSelected = !changedOffer.isSelected;
+        break;
+      }
+
       default: break;
     }
+  }
+
+  /**
+   * @param {CustomEvent & {target: EventEditorView}} evt
+   */
+  handleSave(evt) {
+    //TODO  может развести на 2 метода - сохранение и добавление? (надо посмотреть на взаимодействие с сервером)
+
+    evt.preventDefault();
+    const card = evt.target;
+
+    if (card.state.isDraft) {
+      this.model.createTripEventPoint(this.createSerializedPoint(card.state));
+    } else {
+      this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
+    }
+    this.handleCardClose(evt);
+  }
+
+  /**
+   * @param {CustomEvent & {target: EventEditorView}} evt
+   */
+  handleDelete(evt) {
+    evt.preventDefault();
+    const card = evt.target;
+    this.model.deleteTripEventPoint(this.createSerializedPoint(card.state));
+    this.handleCardClose(evt);
+
   }
 }
 

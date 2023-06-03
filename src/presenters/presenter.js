@@ -13,7 +13,7 @@ class Presenter {
     this.model = model;
 
     this.createEventListeners();
-    this.updateView();
+    window.queueMicrotask(() => this.updateView());
     window.addEventListener('popstate', () => this.updateView());
   }
 

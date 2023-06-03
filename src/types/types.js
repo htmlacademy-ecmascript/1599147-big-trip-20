@@ -12,6 +12,7 @@
  * @typedef {import('../views/card-view.js').default} CardView
  * @typedef {import('../views/view.js').default} View
  * @typedef {import('../views/event-editor-view.js').default} EventEditorView
+ * @typedef {import('../views/placeholder-view.js').default} PlaceholderView
  */
 
 /**
@@ -20,7 +21,7 @@
  */
 
 /**
- * @typedef RawEventPoint
+ * @typedef RawTripEventPoint
  * @prop {string} id
  * @prop {EventType} type
  * @prop {string} destination
@@ -32,7 +33,7 @@
  */
 
 /**
- * @typedef EventPoint
+ * @typedef TripEventPoint
  * @prop {string} id
  * @prop {EventType} type
  * @prop {string} pointId
@@ -102,12 +103,20 @@
  * @prop {Array<Offer & {isSelected?: boolean}>} offerList
  * @prop {boolean} isFavorite
  * @prop {boolean} isEditable
+ * @prop {boolean} isDraft
+ */
+
+/**
+ * @typedef PlaceholderViewState
+ * @prop {string} text
+ * @prop {boolean} [isHidden]
  */
 
 /**
  * @typedef URLParams
  * @prop {string} [editCardId]
  * @prop {SortType} [sortType]
+ * @prop {FilterType} [filterType]
  */
 
 /**
