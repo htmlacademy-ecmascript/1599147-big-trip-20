@@ -194,7 +194,7 @@ class EventEditorView extends View {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="number" name="event-price" value="${this.state.basePrice}">
+        <input class="event__input  event__input--price" id="event-price-1" type="number" min="1" name="event-price" value="${this.state.basePrice}">
       </div>
     `;
   }
