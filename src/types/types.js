@@ -22,6 +22,7 @@
 
 /**
  * @typedef {import('../services/service.js').default} Service
+ * @typedef {import('../services/api-service.js').default} APIService
  */
 
 /**

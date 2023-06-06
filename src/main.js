@@ -12,7 +12,10 @@ import FilterPresenter from './presenters/filter-presenter.js';
 import SortPresenter from './presenters/sort-presenter.js';
 import TripEventListPresenter from './presenters/trip-event-list-presenter.js';
 import PlaceholderPresenter from './presenters/placeholder-presenter.js';
+// import APIService from './services/api-service.js';
+// import {API_CONFIG} from './config/api.config.js';
 
+// window.apiService = new APIService(API_CONFIG);
 const appModel = new AppModel();
 
 const header = document.querySelector('.page-header');
