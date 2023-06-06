@@ -25,7 +25,7 @@ class TripEventListView extends View {
   }
 
   /**
-   * @param {EventViewState} state
+   * @param {TripEventViewState} state
    * @return {EventEditorView | CardView}
    */
   createItemView(state) {

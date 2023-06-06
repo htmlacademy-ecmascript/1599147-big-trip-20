@@ -12,18 +12,20 @@ import FilterPresenter from './presenters/filter-presenter.js';
 import SortPresenter from './presenters/sort-presenter.js';
 import TripEventListPresenter from './presenters/trip-event-list-presenter.js';
 import PlaceholderPresenter from './presenters/placeholder-presenter.js';
-// import APIService from './services/api-service.js';
-// import {API_CONFIG} from './config/api.config.js';
+import APIService from './services/api-service.js';
+import {API_CONFIG} from './config/api.config.js';
 
-// window.apiService = new APIService(API_CONFIG);
-const appModel = new AppModel();
-
+const apiService = new APIService(API_CONFIG);
+const appModel = new AppModel(apiService);
 const header = document.querySelector('.page-header');
 const mainPage = document.querySelector('.page-main');
 
-new TripInfoPresenter(header.querySelector('trip-info-view'));
-new AddNewEventPresenter(header.querySelector('add-event-view'));
-new FilterPresenter(header.querySelector('filter-view'));
-new SortPresenter(mainPage.querySelector('sort-view'));
-new TripEventListPresenter(mainPage.querySelector('trip-event-list'), appModel);
-new PlaceholderPresenter(mainPage.querySelector('placeholder-view'), appModel);
+appModel.loadData().then(() => {
+  new TripInfoPresenter(header.querySelector('trip-info-view'));
+  new AddNewEventPresenter(header.querySelector('add-event-view'));
+  new FilterPresenter(header.querySelector('filter-view'));
+  new SortPresenter(mainPage.querySelector('sort-view'));
+  new TripEventListPresenter(mainPage.querySelector('trip-event-list'), appModel);
+  new PlaceholderPresenter(mainPage.querySelector('placeholder-view'), appModel);
+});
+

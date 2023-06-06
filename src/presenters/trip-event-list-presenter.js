@@ -29,7 +29,7 @@ class TripEventListPresenter extends Presenter {
 
   /**
    * @param {Partial<TripEventPoint>} tripEventItem
-   * @return {EventViewState}
+   * @return {TripEventViewState}
    */
   createEventViewState(tripEventItem) {
     /**
@@ -79,7 +79,7 @@ class TripEventListPresenter extends Presenter {
   }
 
   /**
-   * @param {EventViewState} pointState
+   * @param {TripEventViewState} pointState
    * @return {TripEventPoint}
    */
   createSerializedPoint(pointState) {

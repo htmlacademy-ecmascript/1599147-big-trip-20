@@ -96,11 +96,11 @@
 
 /**
  * @typedef EventListViewState
- * @prop {Array<EventViewState>} items
+ * @prop {Array<TripEventViewState>} items
  */
 
 /**
- * @typedef EventViewState
+ * @typedef TripEventViewState
  * @prop {string} id
  * @prop {Array<{value: EventType, description: string, isSelected: boolean}>} eventTypeList
  * @prop {Array<Point & {isSelected: boolean}>} pointList
