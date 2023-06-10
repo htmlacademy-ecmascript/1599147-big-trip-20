@@ -38,20 +38,24 @@ export default class AppModel extends Model {
    * @return {Promise<void>}
    */
   async loadData() {
-    const serverData = await Promise.all([
-      this.#apiService.getTripEventPoints(),
-      this.#apiService.getOffersList(),
-      this.#apiService.getPointsList()
-    ]);
+    try {
+      const serverData = await Promise.all([
+        this.#apiService.getTripEventPoints(),
+        this.#apiService.getOffersList(),
+        this.#apiService.getPointsList()
+      ]);
 
-    const [rawTripEventPointsList, rawOfferGroups, rawPointList] = serverData;
+      const [rawTripEventPointsList, rawOfferGroups, rawPointList] = serverData;
 
-    this.#rawTripEventPointsList = rawTripEventPointsList;
-    this.#rawOfferGroups = rawOfferGroups;
-    this.#rawPointList = rawPointList;
+      this.#rawTripEventPointsList = rawTripEventPointsList;
+      this.#rawOfferGroups = rawOfferGroups;
+      this.#rawPointList = rawPointList;
 
-    this.notify('load');
-
+      this.notify('load');
+    } catch (error) {
+      this.notify('error', error);
+      throw error;
+    }
   }
 
   /**
