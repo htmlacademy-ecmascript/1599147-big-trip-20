@@ -4,7 +4,7 @@ import {createPairDatePicker, flatpickrGlobalOptions} from '../tools/date-picker
 
 
 /**
- * @extends {View<TripEventViewState>}
+ * @extends {View<EventViewState>}
  */
 class EventEditorView extends View {
 

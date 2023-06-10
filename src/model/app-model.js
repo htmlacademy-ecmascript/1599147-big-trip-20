@@ -49,6 +49,9 @@ export default class AppModel extends Model {
     this.#rawTripEventPointsList = rawTripEventPointsList;
     this.#rawOfferGroups = rawOfferGroups;
     this.#rawPointList = rawPointList;
+
+    this.notify('load');
+
   }
 
   /**
