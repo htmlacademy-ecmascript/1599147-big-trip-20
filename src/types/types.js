@@ -33,6 +33,12 @@
  */
 
 /**
+ * @typedef HTTPRequestOptions
+ * @prop {string} path
+ * @prop {Partial<RequestInit>} init
+ */
+
+/**
  * @typedef RawTripEventPoint
  * @prop {string} id
  * @prop {EventType} type
@@ -116,6 +122,8 @@
  * @prop {boolean} isFavorite
  * @prop {boolean} isEditable
  * @prop {boolean} isDraft
+ * @prop {boolean} [isSaving]
+ * @prop {boolean} [isDeleting]
  */
 
 /**

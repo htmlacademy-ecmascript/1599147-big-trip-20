@@ -203,7 +203,8 @@ class EventEditorView extends View {
    * @return {SafeHtml}
    */
   createSubmitHtml() {
-    return html`<button class="event__save-btn  btn  btn--blue" type="submit">Save</button>`;
+
+    return html`<button class="event__save-btn  btn  btn--blue" type="submit" ${this.state.isSaving ? 'disabled' : ''}> ${this.state.isSaving ? 'Saving...' : 'Save'}</button>`;
   }
 
   /**
@@ -212,10 +213,10 @@ class EventEditorView extends View {
   createResetHtml() {
 
     if (this.state.isDraft) {
-      return html`<button class="event__reset-btn" type="reset">Cancel</button>`;
+      return html`<button class="event__reset-btn btn" type="reset">Cancel</button>`;
     }
 
-    return html`<button class="event__reset-btn" type="reset">Delete</button>`;
+    return html`<button class="event__reset-btn btn" type="reset" ${this.state.isDeleting ? 'disabled' : ''}> ${this.state.isDeleting ? 'Deleting...' : 'Delete'}</button>`;
   }
 
   /**
@@ -298,6 +299,15 @@ class EventEditorView extends View {
     this.render('.event__field-group--destination', this.createDestinationHtml());
     this.render('.event__section--offers', this.createAvailableOffersListHtml());
   }
+
+  renderSubmitButton() {
+    this.render('.event__save-btn', this.createSubmitHtml());
+  }
+
+  renderResetButton() {
+    this.render('.event__reset-btn', this.createResetHtml());
+  }
+
 
 }
 

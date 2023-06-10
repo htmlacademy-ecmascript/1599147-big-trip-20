@@ -85,9 +85,9 @@ class TripEventListPresenter extends Presenter {
   createSerializedPoint(pointState) {
     const selectedPoint = pointState.pointList.find((item) => item.isSelected === true);
 
-    if (pointState.isDraft) {
-      pointState.id = crypto.randomUUID();
-    }
+    // if (pointState.isDraft) {
+    //   pointState.id = crypto.randomUUID();
+    // }
 
     return {
       id: pointState.id,
@@ -146,11 +146,11 @@ class TripEventListPresenter extends Presenter {
   /**
    * @param {CustomEvent & {target: CardView}} evt
    */
-  handleFavorite(evt) {
+  async handleFavorite(evt) {
     const card = evt.target;
 
     card.state.isFavorite = !card.state.isFavorite;
-    this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
+    await this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
     card.render();
   }
 
@@ -209,16 +209,18 @@ class TripEventListPresenter extends Presenter {
   /**
    * @param {CustomEvent & {target: EventEditorView}} evt
    */
-  handleSave(evt) {
-    //TODO  может развести на 2 метода - сохранение и добавление? (надо посмотреть на взаимодействие с сервером)
+  async handleSave(evt) {
 
     evt.preventDefault();
     const card = evt.target;
 
+    card.state.isSaving = true;
+    card.renderSubmitButton();
+
     if (card.state.isDraft) {
-      this.model.createTripEventPoint(this.createSerializedPoint(card.state));
+      await this.model.createTripEventPoint(this.createSerializedPoint(card.state));
     } else {
-      this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
+      await this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
     }
     this.handleCardClose(evt);
   }
@@ -229,6 +231,9 @@ class TripEventListPresenter extends Presenter {
   handleDelete(evt) {
     evt.preventDefault();
     const card = evt.target;
+    card.state.isDeleting = true;
+    card.renderResetButton();
+
     this.model.deleteTripEventPoint(this.createSerializedPoint(card.state));
     this.handleCardClose(evt);
 

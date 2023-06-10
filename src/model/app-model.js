@@ -94,28 +94,31 @@ export default class AppModel extends Model {
   /**
    * @param {TripEventPoint} tripEventPoint
    */
-  createTripEventPoint(tripEventPoint) {
+  async createTripEventPoint(tripEventPoint) {
     const rawPoint = (AppModel.transformTripEventPointToServer(tripEventPoint));
+    const createdPoint = await this.#apiService.addTripEventPoint(rawPoint);
 
-    this.#rawTripEventPointsList.push(rawPoint);
+    this.#rawTripEventPointsList.push(createdPoint);
   }
 
 
   /**
    * @param {TripEventPoint} tripEventPoint
    */
-  updateTripEventPoint(tripEventPoint) {
+  async updateTripEventPoint(tripEventPoint) {
     const rawPoint = (AppModel.transformTripEventPointToServer(tripEventPoint));
-    const index = this.#rawTripEventPointsList.findIndex((item) => item.id === rawPoint.id);
+    const updatedTripEventPoint = await this.#apiService.updateTripEventPoint(rawPoint);
+    const index = this.#rawTripEventPointsList.findIndex((item) => item.id === updatedTripEventPoint.id);
 
-    this.#rawTripEventPointsList.splice(index, 1, rawPoint);
+    this.#rawTripEventPointsList.splice(index, 1, updatedTripEventPoint);
   }
 
   /**
    * @param {TripEventPoint} tripEventPoint
    */
-  deleteTripEventPoint(tripEventPoint) {
+  async deleteTripEventPoint(tripEventPoint) {
     const rawPoint = (AppModel.transformTripEventPointToServer(tripEventPoint));
+    await this.#apiService.deleteTripEventPoint(rawPoint.id);
     const index = this.#rawTripEventPointsList.findIndex((item) => item.id === rawPoint.id);
 
     this.#rawTripEventPointsList.splice(index, 1);
