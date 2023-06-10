@@ -21,6 +21,18 @@
  */
 
 /**
+ * @typedef {import('../services/service.js').default} Service
+ * @typedef {import('../services/api-service.js').default} APIService
+ */
+
+/**
+ * @typedef ServiceOptions
+ * @prop {string} baseUrl
+ * @prop {number} minResponseTime
+ * @prop {string} authorization
+ */
+
+/**
  * @typedef RawTripEventPoint
  * @prop {string} id
  * @prop {EventType} type

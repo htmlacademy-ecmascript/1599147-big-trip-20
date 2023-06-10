@@ -1,21 +1,61 @@
 // @ts-nocheck
 import Model from './model';
-import rawTripEventPointsList from '../mocks/trip-event-mocks.json';
-import rawPointList from '../mocks/point-list-mocks.json';
-import rawOfferGroups from '../mocks/offer-list-mocks.json';
 import {getDuration} from '../tools/utils';
 
 
 export default class AppModel extends Model {
+  /**
+   * @type {APIService}
+   */
+  #apiService;
+
+  /**
+   *@type {Array<RawTripEventPoint>}
+   */
   #rawTripEventPointsList;
+
+  /**
+   * @type {Array<Point>}
+   */
   #rawPointList;
+
+  /**
+   * @type {Array<Offers>}
+   */
   #rawOfferGroups;
 
-  constructor() {
+  /**
+   * @param {APIService} apiService
+   */
+  constructor(apiService) {
     super();
-    this.#rawTripEventPointsList = rawTripEventPointsList;
-    this.#rawOfferGroups = rawOfferGroups;
-    this.#rawPointList = rawPointList;
+
+    this.#apiService = apiService;
+
+  }
+
+  /**
+   * @return {Promise<void>}
+   */
+  async loadData() {
+    try {
+      const serverData = await Promise.all([
+        this.#apiService.getTripEventPoints(),
+        this.#apiService.getOffersList(),
+        this.#apiService.getPointsList()
+      ]);
+
+      const [rawTripEventPointsList, rawOfferGroups, rawPointList] = serverData;
+
+      this.#rawTripEventPointsList = rawTripEventPointsList;
+      this.#rawOfferGroups = rawOfferGroups;
+      this.#rawPointList = rawPointList;
+
+      this.notify('load');
+    } catch (error) {
+      this.notify('error', error);
+      throw error;
+    }
   }
 
   /**
@@ -56,7 +96,7 @@ export default class AppModel extends Model {
    */
   createTripEventPoint(tripEventPoint) {
     const rawPoint = (AppModel.transformTripEventPointToServer(tripEventPoint));
-    // console.log(rawPoint);
+
     this.#rawTripEventPointsList.push(rawPoint);
   }
 
@@ -92,7 +132,6 @@ export default class AppModel extends Model {
    * @return {Array<Offers>}
    */
   getOfferGroups() {
-  // @ts-ignore
     return structuredClone(this.#rawOfferGroups);
   }
 
