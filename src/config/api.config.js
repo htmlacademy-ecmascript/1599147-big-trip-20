@@ -32,5 +32,11 @@ export const HTTP_REQ_PARAM = {
     init: {
       method: 'delete'
     }
+  },
+  getPointsListParam: {
+    path: 'big-trip/destinations',
+  },
+  getOffersListParam: {
+    path: 'big-trip/offers',
   }
 };

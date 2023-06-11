@@ -42,7 +42,7 @@ export default class APIService extends Service {
    * @return {Promise<RawTripEventPoint>}
    */
   async updateTripEventPoint(point) {
-    const response = await this.request(`${this.#httpReqInit.updateTripEventParam.path}/${point.id}+1`, {
+    const response = await this.request(`${this.#httpReqInit.updateTripEventParam.path}/${point.id}`, {
       ...this.#httpReqInit.updateTripEventParam.init, body: JSON.stringify(point)
     });
     return response.json();
@@ -62,7 +62,7 @@ export default class APIService extends Service {
    * @return {Promise<Array<Point>>}
    */
   async getPointsList() {
-    const response = await this.request('big-trip/destinations');
+    const response = await this.request(`${this.#httpReqInit.getPointsListParam.path}`);
     return response.json();
   }
 
@@ -70,7 +70,7 @@ export default class APIService extends Service {
    * @return {Promise<Array<Offers>>}
    */
   async getOffersList() {
-    const response = await this.request('big-trip/offers');
+    const response = await this.request(`${this.#httpReqInit.getOffersListParam.path}`);
     return response.json();
   }
 
