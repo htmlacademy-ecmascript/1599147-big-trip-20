@@ -228,13 +228,13 @@ class TripEventListPresenter extends Presenter {
   /**
    * @param {CustomEvent & {target: EventEditorView}} evt
    */
-  handleDelete(evt) {
+  async handleDelete(evt) {
     evt.preventDefault();
     const card = evt.target;
     card.state.isDeleting = true;
     card.renderResetButton();
 
-    this.model.deleteTripEventPoint(this.createSerializedPoint(card.state));
+    await this.model.deleteTripEventPoint(this.createSerializedPoint(card.state));
     this.handleCardClose(evt);
 
   }

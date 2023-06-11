@@ -13,6 +13,7 @@
  * @typedef {import('../views/view.js').default} View
  * @typedef {import('../views/event-editor-view.js').default} EventEditorView
  * @typedef {import('../views/placeholder-view.js').default} PlaceholderView
+ * @typedef {import('../views/overlay-view.js').default} OverlayView
  */
 
 /**
@@ -37,6 +38,14 @@
  * @prop {string} path
  * @prop {Partial<RequestInit>} init
  */
+
+/**
+ * @typedef URLParams
+ * @prop {string} [editCardId]
+ * @prop {SortType} [sortType]
+ * @prop {FilterType} [filterType]
+ */
+
 
 /**
  * @typedef RawTripEventPoint
@@ -127,19 +136,6 @@
  */
 
 /**
- * @typedef PlaceholderViewState
- * @prop {string} text
- * @prop {boolean} [isHidden]
- */
-
-/**
- * @typedef URLParams
- * @prop {string} [editCardId]
- * @prop {SortType} [sortType]
- * @prop {FilterType} [filterType]
- */
-
-/**
  * @typedef Point
  * @prop {string} id
  * @prop {string} description
@@ -170,6 +166,17 @@
  * @typedef EventTypeItem
  * @prop {EventType} type
  * @prop {string} description
+ */
+
+/**
+ * @typedef PlaceholderViewState
+ * @prop {string} text
+ * @prop {boolean} [isHidden]
+ */
+
+/**
+ * @typedef OverlayViewState
+ * @prop {boolean} isActive
  */
 
 /**
