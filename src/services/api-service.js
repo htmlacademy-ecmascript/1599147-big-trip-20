@@ -42,7 +42,7 @@ export default class APIService extends Service {
    * @return {Promise<RawTripEventPoint>}
    */
   async updateTripEventPoint(point) {
-    const response = await this.request(`${this.#httpReqInit.updateTripEventParam.path}/${point.id}`, {
+    const response = await this.request(`${this.#httpReqInit.updateTripEventParam.path}/${point.id}+1`, {
       ...this.#httpReqInit.updateTripEventParam.init, body: JSON.stringify(point)
     });
     return response.json();

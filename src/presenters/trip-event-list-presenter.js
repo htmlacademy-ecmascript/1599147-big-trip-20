@@ -148,10 +148,14 @@ class TripEventListPresenter extends Presenter {
    */
   async handleFavorite(evt) {
     const card = evt.target;
+    try {
+      card.state.isFavorite = !card.state.isFavorite;
+      await this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
+      card.render();
 
-    card.state.isFavorite = !card.state.isFavorite;
-    await this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
-    card.render();
+    } catch (error) {
+      card.shake();
+    }
   }
 
   /**
@@ -211,31 +215,47 @@ class TripEventListPresenter extends Presenter {
    */
   async handleSave(evt) {
 
-    evt.preventDefault();
     const card = evt.target;
 
-    card.state.isSaving = true;
-    card.renderSubmitButton();
+    try {
+      evt.preventDefault();
+      card.state.isSaving = true;
+      card.renderSubmitButton();
 
-    if (card.state.isDraft) {
-      await this.model.createTripEventPoint(this.createSerializedPoint(card.state));
-    } else {
-      await this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
+      if (card.state.isDraft) {
+        await this.model.createTripEventPoint(this.createSerializedPoint(card.state));
+      } else {
+        await this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
+      }
+
+      this.handleCardClose(evt);
+
+    } catch (error) {
+      card.state.isSaving = false;
+      card.renderSubmitButton();
+      card.shake();
     }
-    this.handleCardClose(evt);
   }
 
   /**
    * @param {CustomEvent & {target: EventEditorView}} evt
    */
   async handleDelete(evt) {
-    evt.preventDefault();
     const card = evt.target;
-    card.state.isDeleting = true;
-    card.renderResetButton();
 
-    await this.model.deleteTripEventPoint(this.createSerializedPoint(card.state));
-    this.handleCardClose(evt);
+    try {
+      evt.preventDefault();
+      card.state.isDeleting = true;
+      card.renderResetButton();
+
+      await this.model.deleteTripEventPoint(this.createSerializedPoint(card.state));
+      this.handleCardClose(evt);
+
+    } catch(error) {
+      card.state.isDeleting = false;
+      card.renderResetButton();
+      card.shake();
+    }
 
   }
 }
