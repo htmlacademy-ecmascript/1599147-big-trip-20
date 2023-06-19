@@ -20,6 +20,22 @@ class TripInfoPresenter extends Presenter {
   }
 
   /**
+   * @override
+   */
+  handleWindowPopState() { }
+
+  /**
+   * @override
+   */
+  createEventListeners() {
+    this.model.addEventListener('modelChange', this.handleModelChange.bind(this));
+  }
+
+  handleModelChange() {
+    this.updateView();
+  }
+
+  /**
    * @return {string}
    */
   getPlaces() {

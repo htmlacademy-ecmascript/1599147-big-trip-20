@@ -101,6 +101,7 @@ export default class AppModel extends Model {
       const createdPoint = await this.#apiService.addTripEventPoint(rawPoint);
 
       this.#rawTripEventPointsList.push(createdPoint);
+      this.notify('modelChange');
 
     } finally {
       this.notify('modelIdle');
@@ -120,6 +121,7 @@ export default class AppModel extends Model {
       const index = this.#rawTripEventPointsList.findIndex((item) => item.id === updatedTripEventPoint.id);
 
       this.#rawTripEventPointsList.splice(index, 1, updatedTripEventPoint);
+      this.notify('modelChange');
 
     } finally {
       this.notify('modelIdle');
@@ -138,6 +140,7 @@ export default class AppModel extends Model {
       const index = this.#rawTripEventPointsList.findIndex((item) => item.id === rawPoint.id);
 
       this.#rawTripEventPointsList.splice(index, 1);
+      this.notify('modelChange');
 
     } finally {
       this.notify('modelIdle');
