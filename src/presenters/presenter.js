@@ -70,7 +70,6 @@ class Presenter {
     return new URL(window.location.href);
   }
 
-
 }
 
 export default Presenter;
