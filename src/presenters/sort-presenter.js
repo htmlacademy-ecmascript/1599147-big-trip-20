@@ -2,7 +2,7 @@ import {SORT_LIST, DEFAULT_SORT, DISABLED_SORT_ITEMS} from '../config/sort.confi
 import Presenter from './presenter.js';
 
 /**
- * @extends {Presenter<SortView>}
+ * @extends {Presenter<SortView, AppModel>}
  */
 class SortPresenter extends Presenter {
 
@@ -12,17 +12,18 @@ class SortPresenter extends Presenter {
    */
   createViewState() {
     const sortDetails = Object.entries(SORT_LIST);
-    const {sortType = DEFAULT_SORT } = this.getUrlParams();
+    const {sortType = DEFAULT_SORT, filterType} = this.getUrlParams();
+    const tripEventPoints = this.model.getTripEventPoints({filterType});
 
     /**
      * @return {Array<SortItem>}
      */
-    const items = sortDetails.map(([type, sortDescription]) => ({
+    const items = tripEventPoints.length ? sortDetails.map(([type, sortDescription]) => ({
       type,
       sortDescription,
       isSelected: type === sortType,
       isDisabled: DISABLED_SORT_ITEMS.includes(type)
-    }));
+    })) : [];
     return {items};
   }
 

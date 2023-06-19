@@ -53,7 +53,7 @@ class PlaceholderPresenter extends Presenter {
 
       return {
         text: PLACEHOLDER_TEXT_LIST[urlParams.filterType] ?? PLACEHOLDER_TEXT_LIST.everything,
-        isHidden: tripEvents.length > 0
+        isHidden: urlParams.editCardId === 'draft' || tripEvents.length > 0
       };
     }
     if (this.isLoadError) {

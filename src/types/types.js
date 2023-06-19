@@ -13,6 +13,7 @@
  * @typedef {import('../views/view.js').default} View
  * @typedef {import('../views/event-editor-view.js').default} EventEditorView
  * @typedef {import('../views/placeholder-view.js').default} PlaceholderView
+ * @typedef {import('../views/overlay-view.js').default} OverlayView
  */
 
 /**
@@ -31,6 +32,20 @@
  * @prop {number} minResponseTime
  * @prop {string} authorization
  */
+
+/**
+ * @typedef HTTPRequestOptions
+ * @prop {string} path
+ * @prop {Partial<RequestInit>} init
+ */
+
+/**
+ * @typedef URLParams
+ * @prop {string} [editCardId]
+ * @prop {SortType} [sortType]
+ * @prop {string} [filterType]
+ */
+
 
 /**
  * @typedef RawTripEventPoint
@@ -60,7 +75,7 @@
  * @typedef TripInfoState
  * @prop {string} places
  * @prop {string} dates
- * @prop {string} cost
+ * @prop {number} cost
  */
 
 /**
@@ -116,19 +131,8 @@
  * @prop {boolean} isFavorite
  * @prop {boolean} isEditable
  * @prop {boolean} isDraft
- */
-
-/**
- * @typedef PlaceholderViewState
- * @prop {string} text
- * @prop {boolean} [isHidden]
- */
-
-/**
- * @typedef URLParams
- * @prop {string} [editCardId]
- * @prop {SortType} [sortType]
- * @prop {FilterType} [filterType]
+ * @prop {boolean} [isSaving]
+ * @prop {boolean} [isDeleting]
  */
 
 /**
@@ -162,6 +166,17 @@
  * @typedef EventTypeItem
  * @prop {EventType} type
  * @prop {string} description
+ */
+
+/**
+ * @typedef PlaceholderViewState
+ * @prop {string} text
+ * @prop {boolean} [isHidden]
+ */
+
+/**
+ * @typedef OverlayViewState
+ * @prop {boolean} isActive
  */
 
 /**

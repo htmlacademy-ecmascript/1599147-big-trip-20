@@ -80,7 +80,7 @@ export default class AppModel extends Model {
   };
 
   /**
-   * @param {{filterType?: FilterType, sortType?: SortType}} [criteria]
+   * @param {{filterType?: string, sortType?: SortType}} [criteria]
    * @return {Array<TripEventPoint>}
    */
   getTripEventPoints(criteria = {}) {
@@ -94,31 +94,54 @@ export default class AppModel extends Model {
   /**
    * @param {TripEventPoint} tripEventPoint
    */
-  createTripEventPoint(tripEventPoint) {
-    const rawPoint = (AppModel.transformTripEventPointToServer(tripEventPoint));
+  async createTripEventPoint(tripEventPoint) {
+    try {
+      this.notify('modelBusy');
+      const rawPoint = (AppModel.transformTripEventPointToServer(tripEventPoint));
+      const createdPoint = await this.#apiService.addTripEventPoint(rawPoint);
 
-    this.#rawTripEventPointsList.push(rawPoint);
+      this.#rawTripEventPointsList.push(createdPoint);
+
+    } finally {
+      this.notify('modelIdle');
+    }
   }
 
 
   /**
    * @param {TripEventPoint} tripEventPoint
    */
-  updateTripEventPoint(tripEventPoint) {
-    const rawPoint = (AppModel.transformTripEventPointToServer(tripEventPoint));
-    const index = this.#rawTripEventPointsList.findIndex((item) => item.id === rawPoint.id);
+  async updateTripEventPoint(tripEventPoint) {
+    try {
+      this.notify('modelBusy');
 
-    this.#rawTripEventPointsList.splice(index, 1, rawPoint);
+      const rawPoint = (AppModel.transformTripEventPointToServer(tripEventPoint));
+      const updatedTripEventPoint = await this.#apiService.updateTripEventPoint(rawPoint);
+      const index = this.#rawTripEventPointsList.findIndex((item) => item.id === updatedTripEventPoint.id);
+
+      this.#rawTripEventPointsList.splice(index, 1, updatedTripEventPoint);
+
+    } finally {
+      this.notify('modelIdle');
+    }
   }
 
   /**
    * @param {TripEventPoint} tripEventPoint
    */
-  deleteTripEventPoint(tripEventPoint) {
-    const rawPoint = (AppModel.transformTripEventPointToServer(tripEventPoint));
-    const index = this.#rawTripEventPointsList.findIndex((item) => item.id === rawPoint.id);
+  async deleteTripEventPoint(tripEventPoint) {
+    try {
+      this.notify('modelBusy');
 
-    this.#rawTripEventPointsList.splice(index, 1);
+      const rawPoint = (AppModel.transformTripEventPointToServer(tripEventPoint));
+      await this.#apiService.deleteTripEventPoint(rawPoint.id);
+      const index = this.#rawTripEventPointsList.findIndex((item) => item.id === rawPoint.id);
+
+      this.#rawTripEventPointsList.splice(index, 1);
+
+    } finally {
+      this.notify('modelIdle');
+    }
   }
 
   /**

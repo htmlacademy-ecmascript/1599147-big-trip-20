@@ -85,9 +85,9 @@ class TripEventListPresenter extends Presenter {
   createSerializedPoint(pointState) {
     const selectedPoint = pointState.pointList.find((item) => item.isSelected === true);
 
-    if (pointState.isDraft) {
-      pointState.id = crypto.randomUUID();
-    }
+    // if (pointState.isDraft) {
+    //   pointState.id = crypto.randomUUID();
+    // }
 
     return {
       id: pointState.id,
@@ -146,12 +146,16 @@ class TripEventListPresenter extends Presenter {
   /**
    * @param {CustomEvent & {target: CardView}} evt
    */
-  handleFavorite(evt) {
+  async handleFavorite(evt) {
     const card = evt.target;
+    try {
+      card.state.isFavorite = !card.state.isFavorite;
+      await this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
+      card.render();
 
-    card.state.isFavorite = !card.state.isFavorite;
-    this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
-    card.render();
+    } catch (error) {
+      card.shake();
+    }
   }
 
   /**
@@ -209,28 +213,49 @@ class TripEventListPresenter extends Presenter {
   /**
    * @param {CustomEvent & {target: EventEditorView}} evt
    */
-  handleSave(evt) {
-    //TODO  может развести на 2 метода - сохранение и добавление? (надо посмотреть на взаимодействие с сервером)
+  async handleSave(evt) {
 
-    evt.preventDefault();
     const card = evt.target;
 
-    if (card.state.isDraft) {
-      this.model.createTripEventPoint(this.createSerializedPoint(card.state));
-    } else {
-      this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
+    try {
+      evt.preventDefault();
+      card.state.isSaving = true;
+      card.renderSubmitButton();
+
+      if (card.state.isDraft) {
+        await this.model.createTripEventPoint(this.createSerializedPoint(card.state));
+      } else {
+        await this.model.updateTripEventPoint(this.createSerializedPoint(card.state));
+      }
+
+      this.handleCardClose(evt);
+
+    } catch (error) {
+      card.state.isSaving = false;
+      card.renderSubmitButton();
+      card.shake();
     }
-    this.handleCardClose(evt);
   }
 
   /**
    * @param {CustomEvent & {target: EventEditorView}} evt
    */
-  handleDelete(evt) {
-    evt.preventDefault();
+  async handleDelete(evt) {
     const card = evt.target;
-    this.model.deleteTripEventPoint(this.createSerializedPoint(card.state));
-    this.handleCardClose(evt);
+
+    try {
+      evt.preventDefault();
+      card.state.isDeleting = true;
+      card.renderResetButton();
+
+      await this.model.deleteTripEventPoint(this.createSerializedPoint(card.state));
+      this.handleCardClose(evt);
+
+    } catch(error) {
+      card.state.isDeleting = false;
+      card.renderResetButton();
+      card.shake();
+    }
 
   }
 }
