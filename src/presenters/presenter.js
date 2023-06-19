@@ -14,7 +14,11 @@ class Presenter {
 
     this.createEventListeners();
     window.queueMicrotask(() => this.updateView());
-    window.addEventListener('popstate', () => this.handleWindowPopState.bind(this));
+    window.addEventListener('popstate', () => this.handleWindowPopState());
+  }
+
+  handleWindowPopState() {
+    this.updateView();
   }
 
   updateView() {
@@ -66,9 +70,7 @@ class Presenter {
     return new URL(window.location.href);
   }
 
-  handleWindowPopState() {
-    this.updateView();
-  }
+
 }
 
 export default Presenter;
