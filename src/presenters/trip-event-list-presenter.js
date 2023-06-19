@@ -85,10 +85,6 @@ class TripEventListPresenter extends Presenter {
   createSerializedPoint(pointState) {
     const selectedPoint = pointState.pointList.find((item) => item.isSelected === true);
 
-    // if (pointState.isDraft) {
-    //   pointState.id = crypto.randomUUID();
-    // }
-
     return {
       id: pointState.id,
       type: pointState.eventTypeList.find((item) => item.isSelected === true).value,
