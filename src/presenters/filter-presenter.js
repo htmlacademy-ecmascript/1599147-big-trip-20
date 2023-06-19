@@ -2,7 +2,7 @@ import {FILTER_LIST, DEFAULT_FILTER} from '../config/filter.config.js';
 import Presenter from './presenter.js';
 
 /**
- * @extends {Presenter<FilterView>}
+ * @extends {Presenter<FilterView, AppModel>}
  */
 class FilterPresenter extends Presenter {
 
@@ -23,10 +23,11 @@ class FilterPresenter extends Presenter {
      * @return {Array<FilterItem>}
      */
     const items = filterDetails.map(([type, filterDescription]) => ({
+
       type,
       filterDescription,
       isSelected: type === filterType,
-      isDisabled: false
+      isDisabled: this.model.getTripEventPoints({filterType: type}).length === 0
     }));
     return {items};
 

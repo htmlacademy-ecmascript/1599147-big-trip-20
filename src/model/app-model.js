@@ -80,7 +80,7 @@ export default class AppModel extends Model {
   };
 
   /**
-   * @param {{filterType?: FilterType, sortType?: SortType}} [criteria]
+   * @param {{filterType?: string, sortType?: SortType}} [criteria]
    * @return {Array<TripEventPoint>}
    */
   getTripEventPoints(criteria = {}) {

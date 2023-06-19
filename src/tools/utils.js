@@ -35,31 +35,13 @@ function html(strings, ...values) {
 }
 
 /**
- * @param {number} a
- * @param {number} b
- * @return {number}
- */
-const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
-
-/**
- * @param {Array} array
- */
-const getRandomItem = (array) => array[getRandomInteger(0, array.length - 1)];
-
-/**
- *
- * @param {string} dateTime
+ * @param {string | dayjs.Dayjs} dateTime
+ * @param {boolean} [isSimple]
  * @return {string}
  */
-const formatDate = (dateTime) => dayjs(dateTime).format('MMM D');
+const formatDate = (dateTime, isSimple) => dayjs(dateTime).format(isSimple ? 'D' : 'MMM D');
 
 /**
- *
  * @param {string} dateTime
  * @return {string}
  */
@@ -94,7 +76,21 @@ const formatDuration = (startDateTime, endDateTime) => {
 };
 
 /**
+ * @param {string} startDateTime
+ * @param {string} endDateTime
+ * @return {string}
+ */
+const formatRange = (startDateTime, endDateTime) => {
+  const start = dayjs(startDateTime);
+  const stop = dayjs(endDateTime);
+  if (start.isSame(stop, 'day')) {
+    return formatDate(start);
+  }
+  return [formatDate(start), formatDate(stop, start.isSame(stop, 'month'))].join(' — ');
+};
+
+/**
  * @param {HTMLInputElement} element
  */
 
-export {SafeHtml, html, getRandomInteger, getRandomItem, formatDate, formatTime, formatDuration, getDuration };
+export {SafeHtml, html, formatDate, formatTime, formatDuration, getDuration, formatRange };

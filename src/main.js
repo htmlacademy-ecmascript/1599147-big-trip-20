@@ -27,10 +27,10 @@ const mainPage = document.querySelector('.page-main');
 new PlaceholderPresenter(mainPage.querySelector('placeholder-view'), appModel);
 
 appModel.loadData().then(() => {
-  new TripInfoPresenter(header.querySelector('trip-info-view'));
+  new TripInfoPresenter(header.querySelector('trip-info-view'), appModel);
   new AddNewEventPresenter(header.querySelector('add-event-view'));
-  new FilterPresenter(header.querySelector('filter-view'));
-  new SortPresenter(mainPage.querySelector('sort-view'));
+  new FilterPresenter(header.querySelector('filter-view'), appModel);
+  new SortPresenter(mainPage.querySelector('sort-view'), appModel);
   new TripEventListPresenter(mainPage.querySelector('trip-event-list'), appModel);
   new OverlayPresenter(body.querySelector('overlay-view'), appModel);
 });

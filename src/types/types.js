@@ -43,7 +43,7 @@
  * @typedef URLParams
  * @prop {string} [editCardId]
  * @prop {SortType} [sortType]
- * @prop {FilterType} [filterType]
+ * @prop {string} [filterType]
  */
 
 
