@@ -16,6 +16,11 @@ class TripInfoView extends View {
    * @override
    */
   createHtml() {
+
+    if (!this.state.places) {
+      return '';
+    }
+
     return html`
       <div class="trip-info__main">
         <h1 class="trip-info__title">${this.state.places}</h1>

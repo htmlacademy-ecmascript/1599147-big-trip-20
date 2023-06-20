@@ -64,10 +64,14 @@ class TripInfoPresenter extends Presenter {
    */
   getDates() {
     const tripEventPoints = this.model.getTripEventPoints();
-    const tripStartTime = tripEventPoints.at(0).startDateTime;
-    const tripStopTime = tripEventPoints.at(-1).endDateTime;
 
-    return formatRange(tripStartTime, tripStopTime);
+    if (tripEventPoints.length > 0) {
+      const tripStartTime = tripEventPoints.at(0).startDateTime;
+      const tripStopTime = tripEventPoints.at(-1).endDateTime;
+
+      return formatRange(tripStartTime, tripStopTime);
+    }
+    return '';
 
   }
 
